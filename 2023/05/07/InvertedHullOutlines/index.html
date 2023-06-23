@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>InvertedHullOutlines | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="原理“Inverted Hull”（反向包围壳）方法的实现原理如下：  在模型的边缘产生轮廓线效果。首先，这个方法创建了一个与原始模型相同的包围壳（hull），但是将其沿着模型的法线方向向外扩展。具体来说，在顶点着色器中，每个顶点的位置被加上沿法线方向扩展的距离，这个距离由轮廓线的厚度参数控制。  在渲染过程中，背面剔除（Cull Front）被应用于扩展后的包围壳。这意味着，只有扩展包围壳的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="InvertedHullOutlines">
+<meta property="og:url" content="http://example.com/2023/05/07/InvertedHullOutlines/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="原理“Inverted Hull”（反向包围壳）方法的实现原理如下：  在模型的边缘产生轮廓线效果。首先，这个方法创建了一个与原始模型相同的包围壳（hull），但是将其沿着模型的法线方向向外扩展。具体来说，在顶点着色器中，每个顶点的位置被加上沿法线方向扩展的距离，这个距离由轮廓线的厚度参数控制。  在渲染过程中，背面剔除（Cull Front）被应用于扩展后的包围壳。这意味着，只有扩展包围壳的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20230507094618734.png">
+<meta property="article:published_time" content="2023-05-07T01:44:56.000Z">
+<meta property="article:modified_time" content="2023-05-07T02:03:07.081Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="shader">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20230507094618734.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-InvertedHullOutlines" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/05/07/InvertedHullOutlines/" class="article-date">
+  <time class="dt-published" datetime="2023-05-07T01:44:56.000Z" itemprop="datePublished">2023-05-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      InvertedHullOutlines
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20230507094618734.png" alt="image-20230507094618734" style="zoom: 80%;" />
+
+<h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>“Inverted Hull”（反向包围壳）方法的实现原理如下：</p>
+<ol>
+<li><p>在模型的边缘产生轮廓线效果。首先，这个方法创建了一个与原始模型相同的包围壳（hull），但是将其沿着模型的法线方向向外扩展。具体来说，在顶点着色器中，每个顶点的位置被加上沿法线方向扩展的距离，这个距离由轮廓线的厚度参数控制。</p>
+</li>
+<li><p>在渲染过程中，背面剔除（Cull Front）被应用于扩展后的包围壳。这意味着，只有扩展包围壳的背面（朝向摄像机的一面）会被渲染。原始模型的前面将不受影响。</p>
+</li>
+<li><p>在渲染扩展包围壳时，片段着色器会使用指定的轮廓线颜色填充背面。这样，在原始模型边缘的地方，轮廓线将被绘制出来。</p>
+</li>
+<li><p>由于原始模型和扩展包围壳的深度值相近，轮廓线会被绘制在原始模型的边缘，从而实现轮廓线效果。</p>
+</li>
+</ol>
+<p>这种方法通常在许多情况下可以实现轮廓线效果，但在复杂的几何形状、模型法线不一致或遮挡关系较复杂的情况下可能出现不理想的效果。当模型的内部部分被扩展包围壳的背面所遮挡时，可能会在非边缘部分产生轮廓线。</p>
+<h4 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h4><p>在这个轮廓线Shader中，轮廓线的效果是通过将模型的法线向外推移，然后绘制该模型的背面（Cull Front），从而在原始模型的边缘显示出轮廓线。在大多数情况下，这种方法可以产生较好的效果。然而，在某些情况下，这种方法可能会导致在非边缘部分产生轮廓线。原因有以下几点：</p>
+<ol>
+<li><p>几何形状的复杂性：对于复杂的几何形状，尤其是那些具有很多相互靠近的部分的形状，可能会出现非边缘部分的轮廓线。因为在将顶点沿法线方向推移时，相邻的顶点可能会相互穿越，导致轮廓线在错误的位置出现。</p>
+</li>
+<li><p>法线方向的不一致：如果模型的法线方向不一致，可能会导致非边缘部分出现轮廓线。例如，如果模型的一部分法线朝向模型内部，而另一部分法线朝向模型外部，当将顶点沿法线方向推移时，可能会导致非边缘部分出现轮廓线。</p>
+</li>
+</ol>
+<p>为了解决这个问题，可以尝试以下方法：</p>
+<ol>
+<li>优化模型：优化模型的几何形状，确保相互靠近的部分有足够的间隔，以避免轮廓线在非边缘部分出现。</li>
+<li>检查并修复法线：检查模型的法线方向，确保它们是一致的。如果发现问题，可以使用3D建模软件修复法线。</li>
+<li>使用不同的轮廓线绘制方法：如果问题仍然存在，可以尝试使用不同的轮廓线绘制方法。例如，您可以使用基于屏幕空间的轮廓线着色器，它是通过计算屏幕空间中的深度差异来绘制轮廓线，这种方法通常能够更准确地在边缘部分绘制轮廓线。然而，这种方法的性能开销可能会更高，因为它需要在屏幕空间进行计算。</li>
+</ol>
+<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line">Shader &quot;Tutorial/<span class="number">020</span>_InvertedHull/Surface&quot; &#123;</span><br><span class="line">	Properties &#123;</span><br><span class="line">		_Color (&quot;Tint&quot;, Color) = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">		_MainTex (&quot;Texture&quot;, <span class="number">2</span>D) = &quot;white&quot; &#123;&#125;</span><br><span class="line">		_Smoothness (&quot;Smoothness&quot;, Range(<span class="number">0</span>, <span class="number">1</span>)) = <span class="number">0</span></span><br><span class="line">		_Metallic (&quot;Metalness&quot;, Range(<span class="number">0</span>, <span class="number">1</span>)) = <span class="number">0</span></span><br><span class="line">		[HDR] _Emission (&quot;Emission&quot;, color) = (<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">		_OutlineColor (&quot;Outline Color&quot;, Color) = (<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line">		_OutlineThickness (&quot;Outline Thickness&quot;, Range(<span class="number">0</span>,<span class="number">1</span>)) = <span class="number">0.1</span></span><br><span class="line">		</span><br><span class="line">		_OutlineMinThickness (&quot;Outline Min Thickness&quot;, Range(<span class="number">0</span>,<span class="number">1</span>)) = <span class="number">0.001</span></span><br><span class="line">		_OutlineMaxThickness (&quot;Outline Max Thickness&quot;, Range(<span class="number">0</span>,<span class="number">1</span>)) = <span class="number">0.1</span></span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	SubShader &#123;</span><br><span class="line">		<span class="comment">//the material is completely non-transparent and is rendered at the same time as the other opaque geometry</span></span><br><span class="line">		Tags&#123; &quot;RenderType&quot;=&quot;Opaque&quot; &quot;Queue&quot;=&quot;Geometry&quot;&#125;</span><br><span class="line"></span><br><span class="line">		CGPROGRAM</span><br><span class="line">		<span class="meta">#pragma surface surf Standard fullforwardshadows</span></span><br><span class="line">		<span class="meta">#pragma target 3.0</span></span><br><span class="line"></span><br><span class="line">		<span class="type">sampler2D</span> _MainTex;</span><br><span class="line">		fixed4 _Color;</span><br><span class="line"></span><br><span class="line">		half _Smoothness;</span><br><span class="line">		half _Metallic;</span><br><span class="line">		half3 _Emission;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//input struct which is automatically filled by unity</span></span><br><span class="line">		struct Input &#123;</span><br><span class="line">			float2 uv_MainTex;</span><br><span class="line">		&#125;;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//the surface shader function which sets parameters the lighting function then uses</span></span><br><span class="line">		<span class="type">void</span> surf (Input i, <span class="keyword">inout</span> SurfaceOutputStandard o) &#123;</span><br><span class="line">			<span class="comment">//read albedo color from texture and apply tint</span></span><br><span class="line">			fixed4 col = tex2D(_MainTex, i.uv_MainTex);</span><br><span class="line">			col *= _Color;</span><br><span class="line">			o.Albedo = col.rgb;</span><br><span class="line">			<span class="comment">//just apply the values for metalness, smoothness and emission</span></span><br><span class="line">			o.Metallic = _Metallic;</span><br><span class="line">			o.Smoothness = _Smoothness;</span><br><span class="line">			o.Emission = _Emission;</span><br><span class="line">		&#125;</span><br><span class="line">		ENDCG</span><br><span class="line"></span><br><span class="line">		<span class="comment">//The second pass where we render the outlines</span></span><br><span class="line">		Pass&#123;</span><br><span class="line">			Cull Front</span><br><span class="line"></span><br><span class="line">			CGPROGRAM</span><br><span class="line"></span><br><span class="line">			<span class="comment">//include useful shader functions</span></span><br><span class="line">			<span class="meta">#include &quot;UnityCG.cginc&quot;</span></span><br><span class="line"></span><br><span class="line">			<span class="comment">//define vertex and fragment shader</span></span><br><span class="line">			<span class="meta">#pragma vertex vert</span></span><br><span class="line">			<span class="meta">#pragma fragment frag</span></span><br><span class="line"></span><br><span class="line">			<span class="comment">//tint of the texture</span></span><br><span class="line">			fixed4 _OutlineColor;</span><br><span class="line">			<span class="type">float</span> _OutlineThickness;</span><br><span class="line">			<span class="type">float</span> _OutlineMinThickness;</span><br><span class="line">			<span class="type">float</span> _OutlineMaxThickness;</span><br><span class="line"></span><br><span class="line">			<span class="comment">//the object data that&#x27;s put into the vertex shader</span></span><br><span class="line">			struct appdata&#123;</span><br><span class="line">				float4 vertex : POSITION;</span><br><span class="line">				float4 normal : NORMAL;</span><br><span class="line">			&#125;;</span><br><span class="line"></span><br><span class="line">			<span class="comment">//the data that&#x27;s used to generate fragments and can be read by the fragment shader</span></span><br><span class="line">			struct v2f&#123;</span><br><span class="line">				float4 position : SV_POSITION;</span><br><span class="line">			&#125;;</span><br><span class="line"></span><br><span class="line">			<span class="comment">//the vertex shader</span></span><br><span class="line">			v2f vert(appdata v)&#123;</span><br><span class="line">			    v2f o;</span><br><span class="line"></span><br><span class="line">			    float3 objectScale = float3(</span><br><span class="line">			        <span class="built_in">length</span>(unity_ObjectToWorld._11_21_31),</span><br><span class="line">			        <span class="built_in">length</span>(unity_ObjectToWorld._12_22_32),</span><br><span class="line">			        <span class="built_in">length</span>(unity_ObjectToWorld._13_23_33)</span><br><span class="line">			    );</span><br><span class="line"></span><br><span class="line">			    <span class="type">float</span> thickness = lerp(_OutlineMinThickness, _OutlineMaxThickness, _OutlineThickness);</span><br><span class="line">			    <span class="type">float</span> objectSize = <span class="built_in">length</span>(objectScale) / <span class="number">3.0</span>;</span><br><span class="line">			    <span class="type">float</span> relativeThickness = thickness * objectSize;</span><br><span class="line"></span><br><span class="line">				<span class="comment">// o.position = UnityObjectToClipPos(v.vertex + normalize(v.normal) * _OutlineThickness);</span></span><br><span class="line">				o.position = UnityObjectToClipPos(v.vertex + <span class="built_in">normalize</span>(v.normal) * relativeThickness);</span><br><span class="line">				<span class="keyword">return</span> o;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			<span class="comment">//the fragment shader</span></span><br><span class="line">			fixed4 frag(v2f i) : SV_TARGET&#123;</span><br><span class="line">				<span class="keyword">return</span> _OutlineColor;</span><br><span class="line">			&#125;</span><br><span class="line"></span><br><span class="line">			ENDCG</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	FallBack &quot;Standard&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="为什么一定要通过法线外移："><a href="#为什么一定要通过法线外移：" class="headerlink" title="为什么一定要通过法线外移："></a>为什么一定要通过法线外移：</h4><figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">o.position = UnityObjectToClipPos(v.vertex + <span class="built_in">normalize</span>(v.normal) * _OutlineThickness);</span><br><span class="line"><span class="comment">//为什么要通过法线外移，不能直接改成： </span></span><br><span class="line">o.position = UnityObjectToClipPos(v.vertex + _OutlineThickness);</span><br></pre></td></tr></table></figure>
+
+<p>使用法线方向来外移顶点是为了确保轮廓线沿着模型的表面扩展。法线表示了模型表面的方向，因此沿着法线移动顶点可以使轮廓线紧贴模型表面。如果直接使用<code>o.position = UnityObjectToClipPos(v.vertex + _OutlineThickness);</code>，这将不会考虑模型的表面方向，而是在模型的每个顶点上添加一个固定的偏移量。</p>
+<p>这种方法可能导致轮廓线不再紧贴模型表面，而是在空间中随意偏移。在某些情况下，这可能导致轮廓线出现不正确或不自然的效果。因此，使用法线方向来外移顶点是创建轮廓线效果的更合适方法。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/05/07/InvertedHullOutlines/" data-id="clj8cxt1j0001z8vndgwl4ttl" data-title="InvertedHullOutlines" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shader/" rel="tag">shader</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/06/23/PolarCoordinates/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          PolarCoordinates
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2023/05/07/Sprite-Outlines2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Sprite Outlines2</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/shader/" rel="tag">shader</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/shader/" style="font-size: 10px;">shader</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/06/23/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2023/06/23/PolarCoordinates/">PolarCoordinates</a>
+          </li>
+        
+          <li>
+            <a href="/2023/05/07/InvertedHullOutlines/">InvertedHullOutlines</a>
+          </li>
+        
+          <li>
+            <a href="/2023/05/07/Sprite-Outlines2/">Sprite Outlines2</a>
+          </li>
+        
+          <li>
+            <a href="/2023/04/23/Billboard/">Shader Billboard</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

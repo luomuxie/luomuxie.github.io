@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Shader Billboard | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="广告牌功能的实现 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374Shader &quot;Unity Shaders Book&#x2F;Chapter 11&#x2F;Billboar">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shader Billboard">
+<meta property="og:url" content="http://example.com/2023/04/23/Billboard/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="广告牌功能的实现 1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374Shader &quot;Unity Shaders Book&#x2F;Chapter 11&#x2F;Billboar">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-04-23T00:24:45.000Z">
+<meta property="article:modified_time" content="2023-05-07T00:39:30.900Z">
+<meta property="article:author" content="John Doe">
+<meta property="article:tag" content="shader">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Billboard" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2023/04/23/Billboard/" class="article-date">
+  <time class="dt-published" datetime="2023-04-23T00:24:45.000Z" itemprop="datePublished">2023-04-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Shader Billboard
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p> 广告牌功能的实现</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">Shader &quot;Unity Shaders Book/Chapter <span class="number">11</span>/Billboard&quot; &#123;</span><br><span class="line">   Properties &#123;</span><br><span class="line">      _MainTex (&quot;Main Tex&quot;, <span class="number">2</span>D) = &quot;white&quot; &#123;&#125;</span><br><span class="line">      _Color (&quot;Color Tint&quot;, Color) = (<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>)</span><br><span class="line">      _VerticalBillboarding (&quot;Vertical Restraints&quot;, Range(<span class="number">0</span>, <span class="number">1</span>)) = <span class="number">1</span> </span><br><span class="line">   &#125;</span><br><span class="line">   SubShader &#123;</span><br><span class="line">      <span class="comment">// Need to disable batching because of the vertex animation</span></span><br><span class="line">      Tags &#123;&quot;Queue&quot;=&quot;Transparent&quot; &quot;IgnoreProjector&quot;=&quot;True&quot; &quot;RenderType&quot;=&quot;Transparent&quot; &quot;DisableBatching&quot;=&quot;True&quot;&#125;</span><br><span class="line">      </span><br><span class="line">      Pass &#123; </span><br><span class="line">         Tags &#123; &quot;LightMode&quot;=&quot;ForwardBase&quot; &#125;</span><br><span class="line">         </span><br><span class="line">         ZWrite Off</span><br><span class="line">         Blend SrcAlpha OneMinusSrcAlpha</span><br><span class="line">         Cull Off</span><br><span class="line">      </span><br><span class="line">         CGPROGRAM</span><br><span class="line">         </span><br><span class="line">         <span class="meta">#pragma vertex vert</span></span><br><span class="line">         <span class="meta">#pragma fragment frag</span></span><br><span class="line">         </span><br><span class="line">         <span class="meta">#include &quot;Lighting.cginc&quot;</span></span><br><span class="line">         </span><br><span class="line">         <span class="type">sampler2D</span> _MainTex;</span><br><span class="line">         float4 _MainTex_ST;</span><br><span class="line">         fixed4 _Color;</span><br><span class="line">         fixed _VerticalBillboarding;</span><br><span class="line">         </span><br><span class="line">         struct a2v &#123;</span><br><span class="line">            float4 vertex : POSITION;</span><br><span class="line">            float4 texcoord : TEXCOORD0;</span><br><span class="line">         &#125;;</span><br><span class="line">         </span><br><span class="line">         struct v2f &#123;</span><br><span class="line">            float4 pos : SV_POSITION;</span><br><span class="line">            float2 uv : TEXCOORD0;</span><br><span class="line">         &#125;;</span><br><span class="line">         </span><br><span class="line">         v2f vert (a2v v) &#123;</span><br><span class="line">            v2f o;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// Suppose the center in object space is fixed</span></span><br><span class="line">            float3 center = float3(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">            float3 viewer = mul(unity_WorldToObject,float4(_WorldSpaceCameraPos, <span class="number">1</span>));</span><br><span class="line">            </span><br><span class="line">            float3 normalDir = viewer - center;</span><br><span class="line">            normalDir.y =normalDir.y * _VerticalBillboarding;</span><br><span class="line">            normalDir = <span class="built_in">normalize</span>(normalDir);</span><br><span class="line">            float3 upDir = <span class="built_in">abs</span>(normalDir.y) &gt; <span class="number">0.999</span> ? float3(<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>) : float3(<span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>);</span><br><span class="line">            float3 rightDir = <span class="built_in">normalize</span>(<span class="built_in">cross</span>(upDir, normalDir));</span><br><span class="line">            upDir = <span class="built_in">normalize</span>(<span class="built_in">cross</span>(normalDir, rightDir));</span><br><span class="line">            </span><br><span class="line">            float3 centerOffs = v.vertex.xyz - center;</span><br><span class="line">            float3 localPos = center + rightDir * centerOffs.x + upDir * centerOffs.y + normalDir * centerOffs.z;</span><br><span class="line">              </span><br><span class="line">            o.pos = UnityObjectToClipPos(float4(localPos, <span class="number">1</span>));</span><br><span class="line">            o.uv = TRANSFORM_TEX(v.texcoord,_MainTex);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> o;</span><br><span class="line">         &#125; </span><br><span class="line">         </span><br><span class="line">         fixed4 frag (v2f i) : SV_Target &#123;</span><br><span class="line">            fixed4 c = tex2D (_MainTex, i.uv);</span><br><span class="line">            c.rgb *= _Color.rgb;</span><br><span class="line">            </span><br><span class="line">            <span class="keyword">return</span> c;</span><br><span class="line">         &#125;</span><br><span class="line">         </span><br><span class="line">         ENDCG</span><br><span class="line">      &#125;</span><br><span class="line">   &#125; </span><br><span class="line">   FallBack &quot;Transparent/VertexLit&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><p>广告牌技术主要用于优化3D场景的性能和渲染效率。它可以应用于各种场景元素，特别是那些距离摄像机较远且对视觉质量要求不高的对象。如：</p>
+<ol>
+<li>精灵和粒子系统：广告牌常用于渲染精灵和粒子系统。例如，火焰、烟雾、雨滴和雪花等效果往往使用广告牌技术实现，以确保这些效果始终面向摄像机，同时减少渲染的复杂度。</li>
+<li>树木和植被：广告牌技术经常用于渲染远离摄像机的树木和植被。当树木和植被距离摄像机较远时，我们可以用一张包含树木或植被纹理的广告牌来代替复杂的3D模型。这样可以减少渲染的三角面数量，从而提高性能。</li>
+<li>角色和道具：在某些情况下，广告牌技术也可以应用于角色和道具的渲染。例如，在游戏中，远离摄像机的非主要角色或小型道具可以用广告牌表示，以降低渲染负担。</li>
+<li>背景元素：在3D场景中，广告牌技术可以用于渲染远处的背景元素，例如云朵、山脉和城市天际线等。这些元素通常位于远离摄像机的地方，使用广告牌技术可以节省渲染资源。</li>
+</ol>
+<h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><p>广告牌（Billboarding）技术的实现原理是通过调整3D场景中的二维面片（Quad），使其始终面向摄像机。这使得我们可以在这些面片上贴上纹理（Texture），从而模拟复杂的3D物体或特效。广告牌技术的主要优势在于它可以大幅降低渲染负担，提高性能。</p>
+<p>以下是广告牌技术的实现步骤：</p>
+<ol>
+<li><p>创建一个四边形（Quad）：首先，我们需要一个四边形作为广告牌的基本形状。这个四边形通常是一个简单的2D矩形，由两个三角形组成。</p>
+</li>
+<li><p>面向摄像机：为了使四边形始终面向摄像机，我们需要在顶点着色器（Vertex Shader）中计算一个新的顶点位置。这个新位置需要考虑摄像机的位置和广告牌的中心位置。通过计算四边形中心到摄像机的向量，我们可以得到一个面向摄像机的法线向量。然后，我们可以通过这个法线向量计算出四边形的右向量和上向量，从而构建一个局部坐标系。这个局部坐标系会随着摄像机的移动而自动调整，确保四边形始终面向摄像机。</p>
+</li>
+<li><p>顶点位置变换：有了这个局部坐标系，我们可以将原始的顶点位置转换为新的顶点位置。这个转换过程通常涉及将顶点位置减去四边形的中心位置，然后使用局部坐标系的基向量进行旋转。最后，我们将旋转后的顶点位置加回四边形的中心位置，得到最终的顶点位置。</p>
+</li>
+<li><p>纹理贴图：为了在广告牌上显示我们需要的内容，我们需要为四边形分配一个纹理。在片元着色器（Fragment Shader）中，我们可以使用纹理坐标（UV Coordinates）采样纹理，并将纹理颜色与片元颜色相乘，从而实现广告牌的渲染。</p>
+</li>
+</ol>
+<p>通过以上步骤，广告牌技术可以实现在3D场景中的二维面片始终面向摄像机，从而在视觉上模拟复杂的3D物体或特效，同时提高性能。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2023/04/23/Billboard/" data-id="clj8cxt1g0000z8vn2r9sbbmc" data-title="Shader Billboard" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/shader/" rel="tag">shader</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2023/05/07/Sprite-Outlines2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Sprite Outlines2
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/08/27/SpriteOutline/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">SpriteOutline</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/shader/" rel="tag">shader</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/shader/" style="font-size: 10px;">shader</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2023/06/23/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2023/06/23/PolarCoordinates/">PolarCoordinates</a>
+          </li>
+        
+          <li>
+            <a href="/2023/05/07/InvertedHullOutlines/">InvertedHullOutlines</a>
+          </li>
+        
+          <li>
+            <a href="/2023/05/07/Sprite-Outlines2/">Sprite Outlines2</a>
+          </li>
+        
+          <li>
+            <a href="/2023/04/23/Billboard/">Shader Billboard</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2023 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
