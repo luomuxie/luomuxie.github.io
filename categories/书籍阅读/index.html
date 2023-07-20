@@ -1,226 +1,141 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  
-  
-  <title>Category: 书籍阅读 | Hexo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/categories/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
-<meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="robots" content="noindex"><meta><title>分类: 书籍阅读 - Hexo</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Hexo"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Hexo"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta property="og:type" content="blog"><meta property="og:title" content="Hexo"><meta property="og:url" content="http://example.com/"><meta property="og:site_name" content="Hexo"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://example.com/img/og_image.png"><meta property="article:author" content="John Doe"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="http://example.com/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com"},"headline":"Hexo","image":["http://example.com/img/og_image.png"],"author":{"@type":"Person","name":"John Doe"},"publisher":{"@type":"Organization","name":"Hexo","logo":{"@type":"ImageObject","url":"http://example.com/img/logo.svg"}},"description":""}</script><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
 
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
 
-  
-  
-<meta name="generator" content="Hexo 6.3.0"></head>
-
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-
-      <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2023" class="archive-year">2023</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2023/06/24/%E8%AF%BB%E3%80%8A%E9%AB%98%E6%95%88%E8%83%BD%E4%BA%BA%E4%BA%BA%E5%A3%AB%E7%9A%84%E4%B8%83%E4%B8%AA%E4%B9%A0%E6%83%AF%E3%80%8B/" class="archive-article-date">
-  <time class="dt-published" datetime="2023-06-24T07:53:55.000Z" itemprop="datePublished">Jun 24</time>
-</a>
-      
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2023/06/24/%E8%AF%BB%E3%80%8A%E9%AB%98%E6%95%88%E8%83%BD%E4%BA%BA%E4%BA%BA%E5%A3%AB%E7%9A%84%E4%B8%83%E4%B8%AA%E4%B9%A0%E6%83%AF%E3%80%8B/">读《高效能人人士的七个习惯》</a>
-    </h1>
-  
-
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/shader/">shader</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/shader/" rel="tag">shader</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/shader/" style="font-size: 10px;">shader</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">June 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/05/">May 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/04/">April 2023</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2023/06/24/%E8%AF%BB%E3%80%8A%E9%AB%98%E6%95%88%E8%83%BD%E4%BA%BA%E4%BA%BA%E5%A3%AB%E7%9A%84%E4%B8%83%E4%B8%AA%E4%B9%A0%E6%83%AF%E3%80%8B/">读《高效能人人士的七个习惯》</a>
-          </li>
-        
-          <li>
-            <a href="/2023/06/23/hello-world/">Hello World</a>
-          </li>
-        
-          <li>
-            <a href="/2023/06/23/PolarCoordinates/">PolarCoordinates</a>
-          </li>
-        
-          <li>
-            <a href="/2023/05/07/InvertedHullOutlines/">InvertedHullOutlines</a>
-          </li>
-        
-          <li>
-            <a href="/2023/05/07/Sprite-Outlines2/">Sprite Outlines2</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2023 John Doe<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
-</footer>
-
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-
-<script src="/js/jquery-3.6.4.min.js"></script>
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-content"><nav class="breadcrumb" aria-label="breadcrumbs"><ul><li><a href="/categories">分类</a></li><li class="is-active"><a href="#" aria-current="page">书籍阅读</a></li></ul></nav></div></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-06-24T07:53:55.000Z" title="6/24/2023, 3:53:55 PM">2023-06-24</time>发表</span><span class="level-item"><time dateTime="2023-07-15T01:19:10.813Z" title="7/15/2023, 9:19:10 AM">2023-07-15</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a></span><span class="level-item">20 分钟读完 (大约2929个字)</span></div></div><p class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2023/06/24/%E8%AF%BB%E3%80%8A%E9%AB%98%E6%95%88%E8%83%BD%E4%BA%BA%E4%BA%BA%E5%A3%AB%E7%9A%84%E4%B8%83%E4%B8%AA%E4%B9%A0%E6%83%AF%E3%80%8B/">读《高效能人人士的七个习惯》</a></p><div class="content"><img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20230715085415101.png" alt="image-20230715085415101" style="zoom: 50%;" />
 
 
 
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
-
-
-
-
-
-  </div>
-</body>
-</html>
+<h2 id="习惯二：以终为始"><a href="#习惯二：以终为始" class="headerlink" title="习惯二：以终为始"></a>习惯二：以终为始</h2><h3 id="撰写个人使命宣言"><a href="#撰写个人使命宣言" class="headerlink" title="撰写个人使命宣言"></a>撰写个人使命宣言</h3><p>清晰地定义个人的核心价值观、目标和目的，并将其表达出来的一种工具。通过撰写个人使命宣言，人们可以明确自己的生活目标、愿景和价值观，并以此为指导在各个领域做出决策和行动。通过表达和想像来加强个人价值观的理解和内化。反复思考和表达自己的核心价值观，并在心中进行反复演练，以达到潜移默化的转变。</p>
+<p>个人使命宣言通常涵盖以下方面：</p>
+<ol>
+<li>个人价值观和原则：明确自己的核心价值观和道德准则，例如诚实、正直、勇敢等。</li>
+<li>长期目标和愿景：设定个人追求的长期目标和愿景，对未来有明确的方向和目标。</li>
+<li>贡献和影响力：阐述自己希望通过自己的行为和工作对他人和社会产生的积极影响。</li>
+<li>个人使命陈述：将以上内容整合成一个简洁而有力的陈述，概括自己的个人使命和意义。</li>
+</ol>
+<p>撰写个人使命宣言有助于个人的自我认知和目标定位，可以提供清晰的方向，使个人在日常生活中更加有目标和意义。它也可以帮助人们更好地理解自己的价值观和优先级，并在面临抉择时做出更明智的决策。</p>
+<h3 id="思考："><a href="#思考：" class="headerlink" title="思考："></a>思考：</h3><p>读到这里时，感觉很有意思，在我工作生活中，特别是作为一个前端的程序员，工作，重复的工作占据了生活的大部分时间，当一有时候空闲下来就会感觉到很迷茫，不知道做什么，头脑经过长时间的工作也变得迟钝、很累想不出自己应该做什么。此时这些碎片的空余时间就会被无目地的刷刷论坛和短视频时里面消耗掉了。但与此同时作为一个996的前端工作者，是没有时间或很少会有成块的时间的。所以反复思考，反复演练，以达到潜移默化，对自己时间的见缝插针就变得尤其重要。</p>
+<h3 id="练习方式"><a href="#练习方式" class="headerlink" title="练习方式"></a>练习方式</h3><p>练习表达和内化个人的核心价值观是一个逐渐深化和持续的过程。以下是一些方法和建议，可以帮助开始实践这个过程：</p>
+<ol>
+<li><p>自省和反思：花时间自省，思考自己真正重要的事物和价值观。问自己一些关键问题，例如什么是对你来说最重要的？你希望在生活中实现什么？这些问题可以帮助你更好地理解自己的核心价值观。</p>
+</li>
+<li><p>撰写个人使命宣言：将你的核心价值观、长期目标和愿景写成一个简洁而有力的陈述。这个宣言可以作为你的指导原则，帮助你在决策和行动中保持一致性。</p>
+</li>
+<li><p>反复阅读和思考：将个人使命宣言作为参考，反复阅读和思考它的含义和意义。在日常生活中，抽出时间来仔细阅读和思考它，让这些价值观深入你的思维和意识。</p>
+</li>
+<li><p>想象和演练：在心中想象自己以这些价值观为指导的情景和行为。反复演练这些场景，想象自己如何应对和表现。通过想象和演练，你可以加强自己与这些价值观的联系，逐渐将它们融入到你的行为中。</p>
+</li>
+<li><p>实践和反馈：在日常生活中积极应用你的核心价值观。将它们应用于决策、行为和与他人的互动中。持续关注自己的实践，并反思自己的行为是否符合你的价值观。从反馈中学习和成长，并不断调整自己的行为。</p>
+</li>
+</ol>
+<p>记住，这个过程需要时间和持续的努力。通过不断地练习和实践，你可以逐渐加深对自己的价值观的理解，让它们在你的生活中起到更大的作用。</p>
+<p>根据角色的不同，我们可能会有不同的使命或价值观。一个人在不同的角色中扮演不同的身份，例如作为家庭成员、职业人士、社区成员等，这些角色对应着不同的责任和期望。在每个角色中，你可以思考和界定相应的使命和价值观。例如，作为一个家庭成员，你的使命可能是关爱和支持家人，维系家庭的和谐；作为职业人士，你的使命可能是努力工作，为公司和社会做出贡献；作为社区成员，你的使命可能是参与社区活动，关注社会问题并积极参与改变。</p>
+<p>通过对每个角色进行思考和界定，你可以明确每个角色的核心价值观和使命陈述。这有助于你在不同的角色中保持一致性，并更好地履行各个角色所带来的责任和使命。在实践中，要注意不同角色之间的平衡和协调。有时候，不同的角色可能会产生冲突或优先级的竞争，需要灵活处理和权衡。关键是要确保各个角色之间的关系相互支持和促进，使整个生活更加和谐和有意义。</p>
+<h2 id="习惯四：双赢思维"><a href="#习惯四：双赢思维" class="headerlink" title="习惯四：双赢思维"></a>习惯四：双赢思维</h2><p>当谈到双赢思维时，它是指一种心态和方法，旨在寻求和创造双方都能从中受益的解决方案。以下是对双赢思维的总结：</p>
+<ol>
+<li><p>合作而非竞争：双赢思维强调合作和协作，而非单纯的竞争。它鼓励人们以合作的方式与他人合作，寻求共同利益和共同成长，而不是通过竞争争取个人利益。</p>
+</li>
+<li><p>积极寻求解决方案：双赢思维的关键在于寻求解决方案，让各方都能获得满意的结果。它要求人们放下对抗和争斗的心态，积极探索创造性的解决方案，以满足各方的需求和利益。</p>
+</li>
+<li><p>尊重和理解他人：双赢思维强调对他人的尊重和理解。它鼓励人们倾听他人的观点和利益，尊重他人的权益和需要，从而建立积极的合作关系。</p>
+</li>
+<li><p>长期的眼光：双赢思维注重长期的发展和关系。它认识到通过建立良好的合作关系和互相支持，可以实现长期的持续性双赢局面，而不是短期的权宜之计。</p>
+</li>
+<li><p>创造价值：双赢思维强调创造共同的价值。它鼓励人们思考如何通过合作和协作，为各方带来更大的价值，从而推动共同的成功和成长。</p>
+</li>
+</ol>
+<p>总而言之，双赢思维是一种积极的心态和方法，它通过合作、寻求解决方案、尊重他人、长期发展和创造共同价值，致力于实现各方的共同利益和持续的成功。</p>
+<p>如果无法实现双赢，那么放弃是一个可选的选择。这意味着在某些情况下，如果无法找到满足双方利益的解决方案，放弃当前的选择可能会更有益。放弃并不意味着放弃所有目标或牺牲自己的需要，而是指意识到当前的选择或争议不具备双赢的潜力，从而寻找更合适的解决方案或机会。这样做有助于避免陷入僵局、冲突或不健康的关系。</p>
+<p>放弃的决策可能涉及一些权衡和考量，例如：</p>
+<ol>
+<li>长远利益：评估当前选择是否会对个人或团体的长远利益产生负面影响。如果发现持续追求当前选择会导致不可弥补的损失或伤害，那么放弃可能是更明智的选择。</li>
+<li>价值观和原则：将当前选择与自己的价值观和原则进行对比。如果当前选择违背了个人的核心价值观或原则，并且无法找到妥协或调和的方式，那么放弃可能更符合自己的内心需求。</li>
+<li>替代机会：评估是否存在更好的替代机会或选择。有时候，放弃当前选择可能为更好的机会或解决方案打开了门，能够带来更大的利益和满足。</li>
+</ol>
+<p>需要注意的是，放弃并不是一种逃避责任或避免困难的方式。它是在认识到当前选择无法实现双赢或对个人利益造成不利影响时，做出明智的决策。通过放弃，你为自己创造了更多的机会，寻找更符合自身价值观和目标的路径。</p>
+<h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><p>这个观念乍一看有点空洞，假大空想感觉，对这些东西泛泛而谈，但似乎没有现实上的操作意义，什么都是理想上的太完美的想当然而以。但细想一下其实这个心态也确实可以运用到生活、工作、家庭中。如：</p>
+<p>感情中：感情中是没有输赢的，当然也没有赢输。如果非要争个高低只有两败具伤，大家都不快乐。</p>
+<p>工作中：我时常想如果我在公司中做多一点，花的时间多一点，那我的时间是不是就会少一点。但不花心思多一点，工作出来的结果永远都是差强人意，明明可以做到90分的，却只做80分出来自己满意，公司也不满意，甚至影响到别人对本人的判断，这又真的好吗。</p>
+<p>等一下，我在公司工作，在工作时间发现了有些地方不完美，去完善它，公司给我了薪资，我做好工作，这本是我的本职上的事情，理所当然的事情啊。</p>
+<p>为什么我会纠结呢？我纠结是忘记了什么是第一，什么是第二了。上班时间肯定工作第一，不是吗？</p>
+<h2 id="我的个人使命："><a href="#我的个人使命：" class="headerlink" title="我的个人使命："></a>我的个人使命：</h2><ul>
+<li>健康第一</li>
+<li>家庭第二</li>
+<li>保持专注，注重效率，关注当下</li>
+<li>去偿试，偿试所能想到的一切，人生不能重来，无所畏惧</li>
+<li>保持成长，坚持阅读</li>
+<li>与人相处，想其所想，思其所虑</li>
+</ul>
+</div></article></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar.png" alt="Your name"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Your name</p><p class="is-size-6 is-block">Your title</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Your location</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">8</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">1</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/ppoffice" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/ppoffice"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Dribbble" href="https://dribbble.com"><i class="fab fa-dribbble"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><!--!--><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">链接</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Hexo</span></span><span class="level-right"><span class="level-item tag">hexo.io</span></span></a></li><li><a class="level is-mobile" href="https://bulma.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Bulma</span></span><span class="level-right"><span class="level-item tag">bulma.io</span></span></a></li></ul></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/shader/"><span class="level-start"><span class="level-item">shader</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/categories/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/"><span class="level-start"><span class="level-item">书籍阅读</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">最新文章</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-07-20T07:30:34.000Z">2023-07-20</time></p><p class="title"><a href="/2023/07/20/LeanrOpenGL1-DrawATriangle/">LeanrOpenGL1_DrawATriangle</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-06-24T07:53:55.000Z">2023-06-24</time></p><p class="title"><a href="/2023/06/24/%E8%AF%BB%E3%80%8A%E9%AB%98%E6%95%88%E8%83%BD%E4%BA%BA%E4%BA%BA%E5%A3%AB%E7%9A%84%E4%B8%83%E4%B8%AA%E4%B9%A0%E6%83%AF%E3%80%8B/">读《高效能人人士的七个习惯》</a></p><p class="categories"><a href="/categories/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/">书籍阅读</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-06-23T09:13:36.746Z">2023-06-23</time></p><p class="title"><a href="/2023/06/23/hello-world/">Hello World</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-06-23T09:11:48.000Z">2023-06-23</time></p><p class="title"><a href="/2023/06/23/PolarCoordinates/">PolarCoordinates</a></p><p class="categories"><a href="/categories/shader/">shader</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2023-05-07T01:44:56.000Z">2023-05-07</time></p><p class="title"><a href="/2023/05/07/InvertedHullOutlines/">InvertedHullOutlines</a></p><p class="categories"><a href="/categories/shader/">shader</a></p></div></article></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">归档</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2023/"><span class="level-start"><span class="level-item">2023</span></span><span class="level-end"><span class="level-item tag">7</span></span></a></li><li><a class="level is-mobile" href="/archives/2022/"><span class="level-start"><span class="level-item">2022</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/shader/"><span class="tag">shader</span><span class="tag">3</span></a></div></div></div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">订阅更新</h3><form action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open(&#039;https://feedburner.google.com/fb/a/mailverify?uri=&#039;,&#039;popupwindow&#039;,&#039;scrollbars=yes,width=550,height=520&#039;);return true"><input type="hidden" value="" name="uri"><input type="hidden" name="loc" value="en_US"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="订阅"></div></div></form></div></div></div><div class="card widget"><div class="card-content"><div class="notification is-danger">You need to set <code>client_id</code> and <code>slot_id</code> to show this AD unit. Please set it in <code>_config.yml</code>.</div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">follow.it</h3><form action="" method="post" target="_blank"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="订阅"></div></div></form></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2023 John Doe</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">© 2019</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
