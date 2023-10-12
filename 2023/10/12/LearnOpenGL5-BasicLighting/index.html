@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>LearnOpenGL5-BasicLighting - Hexo</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Hexo"><meta name="msapplication-TileImage" content="/img/favicon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Hexo"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="环境光 (Ambient Lighting) 环境光是光照模型中的一个组件，其目的是模拟现实世界中无处不在的背景光。在现实生活中，光不仅仅是直接从光源射出并照亮物体，而且还会从物体反射、散射到其他物体上，这使得即使在没有直接光线照射的地方，物体仍然可以看到一些光线。 例如，想象一个房间只有一个窗户，窗户的外面是太阳光。虽然太阳光只直接照亮房间的部分区域，但房间的其他部分并不是完全黑暗的，因为光线"><meta property="og:type" content="blog"><meta property="og:title" content="LearnOpenGL5-BasicLighting"><meta property="og:url" content="http://example.com/2023/10/12/LearnOpenGL5-BasicLighting/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="环境光 (Ambient Lighting) 环境光是光照模型中的一个组件，其目的是模拟现实世界中无处不在的背景光。在现实生活中，光不仅仅是直接从光源射出并照亮物体，而且还会从物体反射、散射到其他物体上，这使得即使在没有直接光线照射的地方，物体仍然可以看到一些光线。 例如，想象一个房间只有一个窗户，窗户的外面是太阳光。虽然太阳光只直接照亮房间的部分区域，但房间的其他部分并不是完全黑暗的，因为光线"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/basic_lighting_phong.png"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/%25E5%25BE%25AE%25E4%25BF%25A1%25E5%259B%25BE%25E7%2589%2587_20231012081632.jpg"><meta property="article:published_time" content="2023-10-12T00:34:17.000Z"><meta property="article:modified_time" content="2023-10-12T00:55:15.742Z"><meta property="article:author" content="xiexian"><meta property="article:tag" content="openGL"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/basic_lighting_phong.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2023/10/12/LearnOpenGL5-BasicLighting/"},"headline":"LearnOpenGL5-BasicLighting","image":["https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/basic_lighting_phong.png","https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/%25E5%25BE%25AE%25E4%25BF%25A1%25E5%259B%25BE%25E7%2589%2587_20231012081632.jpg"],"datePublished":"2023-10-12T00:34:17.000Z","dateModified":"2023-10-12T00:55:15.742Z","author":{"@type":"Person","name":"xiexian"},"publisher":{"@type":"Organization","name":"Hexo","logo":{"@type":"ImageObject","url":"http://example.com/img/logo.svg"}},"description":"环境光 (Ambient Lighting) 环境光是光照模型中的一个组件，其目的是模拟现实世界中无处不在的背景光。在现实生活中，光不仅仅是直接从光源射出并照亮物体，而且还会从物体反射、散射到其他物体上，这使得即使在没有直接光线照射的地方，物体仍然可以看到一些光线。 例如，想象一个房间只有一个窗户，窗户的外面是太阳光。虽然太阳光只直接照亮房间的部分区域，但房间的其他部分并不是完全黑暗的，因为光线"}</script><link rel="canonical" href="http://example.com/2023/10/12/LearnOpenGL5-BasicLighting/"><link rel="icon" href="/img/favicon.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="My GitHub" href="https://github.com/luomuxie"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-10-12T00:34:17.000Z" title="10/12/2023, 8:34:17 AM">2023-10-12</time>发表</span><span class="level-item"><time dateTime="2023-10-12T00:55:15.742Z" title="10/12/2023, 8:55:15 AM">2023-10-12</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/OpenGL/">OpenGL</a></span><span class="level-item">14 分钟读完 (大约2123个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">LearnOpenGL5-BasicLighting</h1><div class="content"><p><img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/basic_lighting_phong.png" alt="img"></p>
+<h3 id="环境光-Ambient-Lighting"><a href="#环境光-Ambient-Lighting" class="headerlink" title="环境光 (Ambient Lighting)"></a><strong>环境光 (Ambient Lighting)</strong></h3><p> 环境光是光照模型中的一个组件，其目的是模拟现实世界中无处不在的背景光。在现实生活中，光不仅仅是直接从光源射出并照亮物体，而且还会从物体反射、散射到其他物体上，这使得即使在没有直接光线照射的地方，物体仍然可以看到一些光线。</p>
+<p>例如，想象一个房间只有一个窗户，窗户的外面是太阳光。虽然太阳光只直接照亮房间的部分区域，但房间的其他部分并不是完全黑暗的，因为光线从地板、墙壁和其他物体上反射并散射到了那些没有直接受到太阳光照射的区域。这种间接的、全方位的光照就是环境光的现实基础。</p>
+<p>在计算机图形学的基础光照模型中，真正模拟所有这些间接的光线反射和散射是非常复杂的，特别是在需要实时渲染的应用中。为了简化这一问题，环境光被引入作为一个简化的模型，为场景中的所有物体提供一个常数的亮度，以模拟这种无处不在的背景光。</p>
+<ul>
+<li><p>在实际的编程实现中，环境光通常通过以下方式来计算：</p>
+<ul>
+<li><em>I</em><sub><em>ambient</em></sub> &#x3D; <em>I</em><sub><em>light</em></sub> X <em>K</em><sub><em>ambient</em></sub></li>
+<li><em>I</em><sub><em>ambient</em></sub> 是最终的环境光亮度</li>
+<li><em>I</em><sub><em>light</em></sub> 是光源的环境光强度。</li>
+<li><em>K</em><sub><em>ambient</em></sub>是物体的环境光反射系数，通常为一个介于0和1之间的值，表示物体如何反射环境光。</li>
+</ul>
+<p>这种方法的一个主要缺点是它不考虑场景中的物体对环境光的遮挡。这就是为什么更高级的光照方法，如全局照明，尝试模拟这些遮挡效应，以获得更真实的渲染结果。</p>
+</li>
+</ul>
+<h4 id="延伸"><a href="#延伸" class="headerlink" title="延伸"></a>延伸</h4><p>模拟环境光的遮挡效应通常需要更复杂的光照技术。其中一些主要的方法和技术如下：</p>
+<ol>
+<li><p><strong>全局照明 (Global Illumination)</strong>: 这是一组算法和技术，旨在模拟光如何在场景中的物体之间反弹。其中最著名的全局照明算法有 Radiosity 和光线追踪 (Ray Tracing)。</p>
+</li>
+<li><p><strong>环境光遮挡 (Ambient Occlusion, AO)</strong>: AO 是一种技术，用于模拟小范围内的环境光遮挡。基本思想是检查物体表面的每个点周围的其他物体，以确定这个点有多少光被阻挡。结果是，凹陷或接近其他物体的地方通常会更暗，因为它们受到更多的遮挡。</p>
+<ul>
+<li><strong>屏幕空间环境光遮挡 (Screen Space Ambient Occlusion, SSAO)</strong>: 这是一种实时渲染中常用的技术，它在屏幕空间内模拟AO，通常比传统的AO方法更快。</li>
+</ul>
+</li>
+<li><p><strong>Photon Mapping</strong>: 这是一种模拟光如何在场景中反弹的方法。它通过追踪光子（光的粒子）来工作，这些光子从光源发射并在与物体相交时存储信息。</p>
+</li>
+<li><p><strong>Path Tracing</strong>: 这是一种基于光线追踪的技术，它模拟光线如何从相机发射并在场景中多次反弹。每次反弹都会收集光照信息，从而模拟间接照明效果。</p>
+</li>
+</ol>
+<p>当考虑实时应用（如视频游戏）时，性能是一个重要的问题。因此，常常会使用近似和优化技术来实现上述方法。对于不需要实时的应用，例如电影制作或静态渲染，可以使用更精确（但计算密集型）的方法来获得最佳的光照效果。</p>
+<p>总的来说，模拟环境光的遮挡和反弹是一个复杂的任务，需要权衡计算复杂性、实时性和渲染质量。</p>
+<h3 id="漫反射-Diffuse-Lighting"><a href="#漫反射-Diffuse-Lighting" class="headerlink" title="漫反射 (Diffuse Lighting)"></a><strong>漫反射 (Diffuse Lighting)</strong></h3><p><img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/%25E5%25BE%25AE%25E4%25BF%25A1%25E5%259B%25BE%25E7%2589%2587_20231012081632.jpg" alt="微信图片_20231012081632"></p>
+<p>- </p>
+<p>漫反射是当光线击中物体表面后，光线会均匀地、各向异性地散射。这意味着光线不会像在镜面反射中那样只沿一个方向反射，而是会在许多方向上散射。这是大多数物体（特别是那些没有光泽的物体）显示其固有颜色的主要方式。</p>
+<h4 id="漫反射的计算"><a href="#漫反射的计算" class="headerlink" title="漫反射的计算"></a>漫反射的计算</h4><ul>
+<li><p>漫反射计算公式。</p>
+<p>[ I_{diffuse} &#x3D; I_{light} \times K_{diffuse} \times max(0, \vec{N} \cdot \vec{L}) ]</p>
+<p>这个公式描述了在一个特定点上漫反射的亮度是如何被计算的。</p>
+<ol>
+<li><p><strong>( I_{light} )</strong></p>
+<p>这是光源的亮度。这可以是一个RGB颜色值，其中R、G、B分别代表红、绿、蓝的亮度。一个光源的亮度可以是常数，例如一个常亮的点光源，或者它可以基于距离、方向或其他因素而变化。</p>
+</li>
+<li><p><strong>( K_{diffuse} )</strong></p>
+<p>这是物体的漫反射材质系数。它也是一个RGB颜色值，表示物体的固有颜色。例如，红色的苹果可能有一个高的红色分量和较低的绿色和蓝色分量。</p>
+</li>
+<li><p><strong>( \vec{N} ) 和 ( \vec{L} )</strong></p>
+<ul>
+<li>( \vec{N} ) 是物体表面上点的法线向量。法线是垂直于表面的一个单位向量。</li>
+<li>( \vec{L} ) 是从物体表面上的点指向光源的向量。</li>
+</ul>
+<p>这两个向量的点积 ( \vec{N} \cdot \vec{L} ) 会得到一个标量值，这个值表示两个向量之间的角度的余弦值。</p>
+<p>当光完全垂直照在物体表面上时（即法线向量与指向光源的向量之间的角度为0度），点积的值为1，表示光的强度是最大的。当光与物体表面形成一个锐角时，点积的值逐渐减小，表示光的强度减弱。当光线与物体表面平行时，点积的值为0，表示没有光照亮该表面。</p>
+</li>
+<li><p><strong>max(0, \vec{N} \cdot \vec{L})</strong></p>
+<p>使用max函数确保当光线在物体表面的背面（即点积为负数）时，漫反射亮度为0。这是因为，从几何上看，如果光线在物体的背面，那么这个点就不应该受到光源的照射。</p>
+</li>
+</ol>
+<p>整个公式的结果 ( I_{diffuse} ) 是一个RGB颜色值，表示由于漫反射而在物体表面上产生的亮度。通过将这个值与场景中其他的光照效果（如环境光和镜面反射）结合起来，我们可以得到物体在特定点上的总亮度。</p>
+</li>
+</ul>
+<h4 id="关于法线"><a href="#关于法线" class="headerlink" title="关于法线"></a>关于法线</h4><p>法线（normal）这个概念并不是专门为了漫反射而创建的。法线在数学和计算机图形学中是一个基础概念，用于描述一个表面上某一点的方向。这个方向垂直于该点处的表面。</p>
+<p>法线在很多计算机图形学的应用中都是非常关键的，其中包括：</p>
+<ol>
+<li><strong>光照计算</strong>：如我们之前讨论的，法线用于计算一个表面点如何与光互动，不仅限于漫反射，还包括环境光、镜面反射等。</li>
+<li><strong>碰撞检测</strong>：在物理模拟和游戏中，法线可以用于确定物体在碰撞后应该如何反弹。</li>
+<li><strong>纹理映射</strong>：在高级的渲染技术中，如法线映射（normal mapping），法线用于模拟表面的细节，使其看起来更加真实，即使在没有实际几何细节的情况下。</li>
+<li><strong>曲面细分</strong>：在曲面建模和细分中，法线用于帮助决定如何拆分或细分一个表面，以得到更平滑或更精细的结果。</li>
+</ol>
+<p>总之，法线是计算机图形学中的一个核心概念，它在很多方面都有应用，而不仅仅是在漫反射光照中。</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>LearnOpenGL5-BasicLighting</p><p><a href="http://example.com/2023/10/12/LearnOpenGL5-BasicLighting/">http://example.com/2023/10/12/LearnOpenGL5-BasicLighting/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>xiexian</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-10-12</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2023-10-12</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/openGL/">openGL</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/09/06/LearnOpenGL4-Colors/"><span class="level-item">LearnOpenGL4-Colors</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar.png" alt="谢 娴"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">谢 娴</p><p class="is-size-6 is-block">游戏前端开发</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China,GuangZhou</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">16</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">5</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">4</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/luomuxie" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/luomuxie"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Dribbble" href="https://dribbble.com"><i class="fab fa-dribbble"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#环境光-Ambient-Lighting"><span class="level-left"><span class="level-item">1</span><span class="level-item">环境光 (Ambient Lighting)</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#延伸"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">延伸</span></span></a></li></ul></li><li><a class="level is-mobile" href="#漫反射-Diffuse-Lighting"><span class="level-left"><span class="level-item">2</span><span class="level-item">漫反射 (Diffuse Lighting)</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#漫反射的计算"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">漫反射的计算</span></span></a></li><li><a class="level is-mobile" href="#关于法线"><span class="level-left"><span class="level-item">2.2</span><span class="level-item">关于法线</span></span></a></li></ul></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/OpenGL/"><span class="level-start"><span class="level-item">OpenGL</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/categories/match/"><span class="level-start"><span class="level-item">match</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/shader/"><span class="level-start"><span class="level-item">shader</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/categories/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/"><span class="level-start"><span class="level-item">书籍阅读</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/categories/%E8%8B%B1%E6%96%87/"><span class="level-start"><span class="level-item">英文</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/English/"><span class="tag">English</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/match/"><span class="tag">match</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/openGL/"><span class="tag">openGL</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/tags/shader/"><span class="tag">shader</span><span class="tag">3</span></a></div></div></div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">follow.it</h3><form action="" method="post" target="_blank"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="订阅"></div></div></form></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2023 xiexian</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">© 2019</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
