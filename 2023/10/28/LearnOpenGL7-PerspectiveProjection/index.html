@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>LearnOpenGL7-PerspectiveProjection - Hexo</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Hexo"><meta name="msapplication-TileImage" content="/img/favicon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Hexo"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="视锥（Frustum）"><meta property="og:type" content="blog"><meta property="og:title" content="LearnOpenGL7-PerspectiveProjection"><meta property="og:url" content="http://example.com/2023/10/28/LearnOpenGL7-PerspectiveProjection/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="视锥（Frustum）"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image.png"><meta property="article:published_time" content="2023-10-28T01:55:43.000Z"><meta property="article:modified_time" content="2023-10-29T03:40:03.373Z"><meta property="article:author" content="xiexian"><meta property="article:tag" content="openGL"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2023/10/28/LearnOpenGL7-PerspectiveProjection/"},"headline":"LearnOpenGL7-PerspectiveProjection","image":["https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image.png"],"datePublished":"2023-10-28T01:55:43.000Z","dateModified":"2023-10-29T03:40:03.373Z","author":{"@type":"Person","name":"xiexian"},"publisher":{"@type":"Organization","name":"Hexo","logo":{"@type":"ImageObject","url":"http://example.com/img/logo.svg"}},"description":"视锥（Frustum）"}</script><link rel="canonical" href="http://example.com/2023/10/28/LearnOpenGL7-PerspectiveProjection/"><link rel="icon" href="/img/favicon.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="My GitHub" href="https://github.com/luomuxie"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-10-28T01:55:43.000Z" title="10/28/2023, 9:55:43 AM">2023-10-28</time>发表</span><span class="level-item"><time dateTime="2023-10-29T03:40:03.373Z" title="10/29/2023, 11:40:03 AM">2023-10-29</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/OpenGL/">OpenGL</a></span><span class="level-item">20 分钟读完 (大约2993个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">LearnOpenGL7-PerspectiveProjection</h1><div class="content"><p><img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image.png" alt="PerspectiveProjection"></p>
+<h2 id="视锥（Frustum）"><a href="#视锥（Frustum）" class="headerlink" title="视锥（Frustum）"></a>视锥（Frustum）<span id="more"></span></h2><p>这是一个截断的金字塔，其中的“Near Plane”和“Far Plane”定义了可见的前后界限。任何在“Near Plane”之前或“Far Plane”之后的物体都不会被渲染。</p>
+<p>视锥的四个边界（l, r, b, t）分别代表：</p>
+<ul>
+<li><code>l</code>：left，左边界</li>
+<li><code>r</code>：right，右边界</li>
+<li><code>b</code>：bottom，下边界</li>
+<li><code>t</code>：top，上边界</li>
+</ul>
+<p>这些边界与近裁剪面（Near Plane）相交，定义了在屏幕上看到的实际区域。</p>
+<h3 id="透视投影矩阵（Perspective-Projection-Matrix）"><a href="#透视投影矩阵（Perspective-Projection-Matrix）" class="headerlink" title="透视投影矩阵（Perspective Projection Matrix）"></a>透视投影矩阵（Perspective Projection Matrix）</h3><p>在图的下方，一个矩阵<code>P</code>。这是透视投影矩阵，用于将物体从视锥映射到规范化的设备坐标（Normalized Device Coordinates，简称NDC）。</p>
+<h2 id="矩阵推导"><a href="#矩阵推导" class="headerlink" title="矩阵推导"></a>矩阵推导</h2><h2 id="1、标准化视锥"><a href="#1、标准化视锥" class="headerlink" title="1、标准化视锥:"></a>1、<strong>标准化视锥</strong>:</h2><p>首先希望将视锥规范化，这意味着希望将它转换成一个顶部和底部宽度为2，深度范围从-1到1的立方体。这可以通过缩放和平移完成。</p>
+<h3 id="1、缩放"><a href="#1、缩放" class="headerlink" title="1、缩放"></a>1、缩放</h3><p>$$<br>S &#x3D; \begin{bmatrix}<br>\frac{2}{r - l} &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; \frac{2}{t - b} &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; \frac{2}{n - f} &amp; 0 \<br>0 &amp; 0 &amp; 0 &amp; 1<br>\end{bmatrix}<br>$$</p>
+<p>$$</p>
+<p>$$</p>
+<p><strong>x方向的缩放因子</strong>是为了确保经过变换后，x轴上的坐标范围被映射到[-1, 1]。这一缩放因子是基于视锥体在x轴上的宽度确定的。</p>
+<p>考虑视锥体在x方向的宽度是<code>(r - l)</code>，其中<code>r</code>是右边界，<code>l</code>是左边界。为了使这个范围映射到[-1, 1]，需要将其宽度变为2。所以，缩放因子应该是目标宽度除以实际宽度，即：</p>
+<p>$$<br>\text{缩放因子} &#x3D; \frac{2}{r - l}<br>$$<br>这样，当乘以这个缩放因子后，整个x轴上的范围<code>(r - l)</code>就被映射到了2的宽度，即[-1, 1]。同样的逻辑也适用于y方向和z方向，只不过每个方向的缩放因子是基于其相应的宽度确定的。</p>
+<p><strong>同理也可得出y和Z</strong></p>
+<p><strong>但Z上的分量为什么是负的呢：</strong></p>
+<p>在大多数计算机图形系统中，尤其是OpenGL，使用的是右手坐标系。在这种坐标系中，当你从原点沿z轴的正方向看去，物体离你越远，它的z值就越大。但在深度测试中，通常希望物体离摄像机越近，其深度值越小。</p>
+<p>为了解决这个矛盾，将摄像机空间（也叫眼睛空间）的z轴翻转，使得当物体远离摄像机时，其z值变得更小。这是通过将z值取负来实现的，因此在透视投影矩阵中，z分量是负的。</p>
+<h3 id="2、平移"><a href="#2、平移" class="headerlink" title="2、平移"></a>2、平移</h3><p>平移，就是把整个视锥的中心点平移到原上图中坐标的（0,0,0），使视锥居中</p>
+<p>$$<br>T &#x3D; \begin{bmatrix}<br>1 &amp; 0 &amp; 0 &amp; -(r + l)&#x2F;2 \<br>0 &amp; 1 &amp; 0 &amp; -(t + b)&#x2F;2 \<br>0 &amp; 0 &amp; 1 &amp; -(f + n)&#x2F;2 \<br>0 &amp; 0 &amp; 0 &amp; 1<br>\end{bmatrix}<br>$$<br><strong>以x方向为例：</strong>目标是将视锥体在<code>x</code>方向上平移到原点，使其变得对称。要达到这个目的，需要计算左（l）和右（r）边界的中点。</p>
+<p>考虑以下步骤：</p>
+<ol>
+<li>找到<code>x</code>方向上的中点：<code>(l + r) / 2</code></li>
+<li>要将这个中点移到原点，需要在<code>x</code>方向上应用相反的移动，即<code>-(l + r) / 2</code></li>
+</ol>
+<p><strong>同理可以得到y 和z</strong></p>
+<p>这两个矩阵相乘：<code>P = S x T</code>。<br>$$<br>P &#x3D; \begin{bmatrix}<br>\frac{2}{r - l} &amp; 0 &amp; -\frac{r + l}{r - l} &amp; 0 \<br>0 &amp; \frac{2}{t - b} &amp; -\frac{t + b}{t - b} &amp; 0 \<br>0 &amp; 0 &amp; \frac{2}{n - f} &amp; -\frac{f + n}{f - n} \<br>0 &amp; 0 &amp; 0 &amp; 1<br>\end{bmatrix}<br>$$</p>
+<h3 id="3、深度映射"><a href="#3、深度映射" class="headerlink" title="3、深度映射"></a>3、深度映射</h3><p>首先需要理解，为什么要对深度进行映射。</p>
+<p>在计算机图形学中，深度值通常被用于深度测试，以确定哪个片段在最终的渲染图像中是可见的。深度缓冲区中的值通常是介于0和1之间的，因此希望将所有可见的几何图形的深度范围（从近平面到远平面）映射到这个区间。</p>
+<p>为此，需要对Z值进行适当的缩放和平移，以使其落入所需的范围。</p>
+<ol>
+<li><p><strong>透视投影的Z值变换</strong>:<br>在透视投影中，近平面和远平面的深度不是线性的。这是因为透视效应导致距离摄像机更远的对象投影到屏幕上的面积更小。</p>
+<p>需要一个非线性的深度映射，使得物体在摄像机附近时深度变化更快，而在摄像机远处时深度变化更慢。这样，可以更有效地利用深度缓冲区的精度。</p>
+</li>
+<li><p><strong>Z值映射的公式</strong>:<br>为了得到上述效果，使用以下公式来计算新的z值和w值:</p>
+<p>$$<br>Z_{\text{new}} &#x3D; \frac{-2fn}{f - n} \times \frac{1}{Z_{\text{original}}}<br>$$</p>
+<p>$$<br>W_{\text{new}} &#x3D; \frac{-(f + n)}{f - n} \times \frac{1}{Z_{\text{original}}}<br>$$</p>
+<p>其中, 是摄像机视图空间中的原始z值，而( f ) 和( n ) 分别是远平面和近平面的深度。</p>
+<p>$Z_{\text{original}}$是摄像机视图空间中的原始z值，而$ f $  和$n$分别是远平面和近平面的深度。</p>
+<p>当进行透视除法（即将x, y, z分别除以w）时，得到:上述公式会生成介于-1和1之间的Z值，这正是在裁剪空间中所期望的。<br>$$<br>Z_{\text{clip}} &#x3D; \frac{Z_{\text{new}}}{W_{\text{new}}}<br>$$</p>
+</li>
+<li><p><strong>为什么使用这个公式</strong>:<br>上述公式确保了两件事情：</p>
+<ul>
+<li>近平面的深度映射到-1</li>
+<li>远平面的深度映射到1</li>
+</ul>
+<p>这样，所有在近平面和远平面之间的几何图形都会被映射到-1和1之间，这使得它们可以正确地进行裁剪和深度测试。</p>
+</li>
+</ol>
+<p>这就是透视投影中深度映射的基本原理和推导过程。</p>
+<h3 id="4、透视除法"><a href="#4、透视除法" class="headerlink" title="4、透视除法:"></a>4、<strong>透视除法</strong>:</h3><p>在得到新的坐标后，为了获得透视效果，需要进行透视除法。这意味着将x、y和z坐标除以w’。</p>
+<p>在OpenGL中，透视除法是在将顶点从裁剪空间变换到规范化设备坐标（NDC）空间时自动执行的。这是在光栅化阶段之前的最后一个阶段。</p>
+<h3 id="5、z轴翻转"><a href="#5、z轴翻转" class="headerlink" title="5、z轴翻转:"></a>5、<strong>z轴翻转</strong>:</h3><p>在OpenGL中，为了与右手坐标系一致，需要翻转z轴。这是通过以下矩阵来完成的：<br>$$<br>\begin{bmatrix}<br>1 &amp; 0 &amp; 0 &amp; 0 \<br>0 &amp; 1 &amp; 0 &amp; 0 \<br>0 &amp; 0 &amp; -1 &amp; 0 \<br>0 &amp; 0 &amp; 0 &amp; 1 \<br>\end{bmatrix}<br>$$</p>
+<h3 id="6、结果将上述矩阵相乘，可以得到最终的透视投影矩阵P："><a href="#6、结果将上述矩阵相乘，可以得到最终的透视投影矩阵P：" class="headerlink" title="6、结果将上述矩阵相乘，可以得到最终的透视投影矩阵P："></a>6、结果将上述矩阵相乘，可以得到最终的透视投影矩阵P：</h3><p>$$<br>\begin{bmatrix}<br>2n&#x2F;(r - l) &amp; 0             &amp; (r + l)&#x2F;(r - l) &amp; 0 \<br>0          &amp; 2n&#x2F;(t - b)    &amp; (t + b)&#x2F;(t - b) &amp; 0 \<br>0          &amp; 0             &amp; (f + n)&#x2F;(f - n) &amp; 2fn&#x2F;(f - n) \<br>0          &amp; 0             &amp; -1              &amp; 0 \<br>\end{bmatrix}<br>$$</p>
+<h2 id="2、Z值映射的公式推理"><a href="#2、Z值映射的公式推理" class="headerlink" title="2、Z值映射的公式推理"></a>2、<strong>Z值映射的公式推理</strong></h2><p>Z值映射的公式并非简单地套入一个数学曲线。它是基于线性代数和几何图形学的原理来推导出的。为了更深入地解释这一点，将从更高层次上分析这一问题。</p>
+<p>首先，考虑摄像机&#x2F;观察空间中的一个点P(x, y, z)，其中z是从摄像机&#x2F;眼睛位置测得的深度。</p>
+<p>目标是将这个点投影到一个近平面上，并为这个点分配一个新的z值，这个z值应该在整个投影过程中是非线性的，这样就可以充分利用深度缓冲区的精度。</p>
+<ol>
+<li><h4 id="投影到近平面"><a href="#投影到近平面" class="headerlink" title="投影到近平面:"></a><strong>投影到近平面</strong>:</h4><p>使用透视除法，点P(x, y, z)的屏幕空间坐标为:<br>( X &#x3D; x&#x2F;z )<br>( Y &#x3D; y&#x2F;z )<br>这一步已经将点投影到了近平面上。</p>
+</li>
+<li><h3 id="非线性深度映射"><a href="#非线性深度映射" class="headerlink" title="非线性深度映射:"></a><strong>非线性深度映射</strong>:</h3><p>现在，要做的是为这个点分配一个新的z值。希望这个z值的范围在[0,1]之间（或[-1,1]，取决于你的图形API），并且它应该是非线性的。</p>
+</li>
+<li><h3 id="推导新的Z值"><a href="#推导新的Z值" class="headerlink" title="推导新的Z值:"></a><strong>推导新的Z值</strong>:</h3><p>在摄像机空间中，点P的z坐标是一个负数，因为摄像机通常朝向-Z方向。可以使用以下公式来获得新的z值:<br>( Z’ &#x3D; A&#x2F;z + B )<br>其中，A和B是常数，需要确定它们的值，以确保近平面映射到0（或-1），远平面映射到1。</p>
+<p>设定两个方程：<br>当z &#x3D; -n时，( Z’ &#x3D; 0 ) （或-1）<br>当z &#x3D; -f时，( Z’ &#x3D; 1 )</p>
+<p>解这两个方程，可以得到A和B的值。通过一些代数运算，可以得到：</p>
+<p>$$A &#x3D; -\frac{(f + n)}{(f - n)}$$<br>$B &#x3D; -\frac{2fn}{(f - n)}$</p>
+<p>因此，新的Z值为:<br>$Z’ &#x3D; (-2fn \times \frac{z}{f - n}) - \frac{(f + n)}{(f - n)}$</p>
+</li>
+</ol>
+<p>通过上述步骤，可以得到深度值的非线性映射。这确保了深度缓冲区的更有效使用，因为在摄像机附近的物体有更高的深度精度。</p>
+<h2 id="3、透视公式-Z’-x3D-A-x2F-z-B"><a href="#3、透视公式-Z’-x3D-A-x2F-z-B" class="headerlink" title="3、透视公式 ( Z’ &#x3D; A&#x2F;z + B )"></a>3、<strong><em>透视公式</em> ( Z’ &#x3D; A&#x2F;z + B )</strong></h2><p>​	公式 ( Z’ &#x3D; A&#x2F;z + B ) 的推导实际上是基于透视投影的需求。为了理解这个公式，可以考虑以下几点：</p>
+<ol>
+<li><p><strong>线性深度不足以满足透视效果</strong>：在透视投影中，离摄像机越近的物体应该看起来越大，离摄像机越远的物体应该看起来越小。因此，深度（即z值）对于透视效果的影响是非线性的。这就是为什么不能仅仅使用线性的深度映射。</p>
+</li>
+<li><p><strong>透视分布</strong>：为了保持这种透视关系，并在z缓冲中有效地使用深度值，需要一个公式，它可以为近的物体分配更多的深度范围，为远的物体分配较少的深度范围。公式 ( Z’ &#x3D; A&#x2F;z ) 可以实现这个效果，因为随着z值的增加，Z’的增量逐渐减小。</p>
+</li>
+<li><p><strong>归一化深度值</strong>：为了确保深度值适应特定的范围，如[0, 1]或[-1, 1]，加入常数B来进行偏移。这也解释了为什么有 “+ B” 这个项。</p>
+</li>
+</ol>
+<p>这个公式的出现并不是随意的，而是为了满足计算机图形学中透视投影的特定需求。</p>
+<h2 id="4、透视除法-1"><a href="#4、透视除法-1" class="headerlink" title="4、透视除法"></a>4、<strong>透视除法</strong></h2><p>透视除法是3D图形渲染中一个非常重要的步骤，它将齐次坐标从投影空间转换到屏幕空间。简单来说，当在3D空间中进行变换时，通常使用4x4的矩阵和齐次坐标（即一个额外的维度w，所以坐标是(x, y, z, w)）来进行计算。这个额外的w分量是为了能够执行诸如透视投影这样的非线性变换。</p>
+<p>透视除法涉及到用w分量来除x、y和z分量。具体来说，当你有一个点P(x, y, z, w)，透视除法后的坐标是：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">x&#x27; = x / w</span><br><span class="line">y&#x27; = y / w</span><br><span class="line">z&#x27; = z / w</span><br></pre></td></tr></table></figure>
+
+<p>透视除法的关键之处在于，当执行透视投影时，w分量不再是1，而是与点到摄像机的距离成正比。这意味着，一个点离摄像机越远，经过透视除法后，它在屏幕上的坐标x’和y’会变得越小，从而实现了透视效果。</p>
+<p>例如，考虑一个远离摄像机的点，它的w值可能会增加，这样当用w来除时，得到的x’和y’值会相对较小，导致该点在屏幕上看起来离中心更远，从而产生了透视效果。</p>
+<p>透视除法是将点从齐次坐标（投影空间）转换到屏幕空间的关键步骤，它提供了透视效果，使得远离摄像机的物体看起来更小。</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>LearnOpenGL7-PerspectiveProjection</p><p><a href="http://example.com/2023/10/28/LearnOpenGL7-PerspectiveProjection/">http://example.com/2023/10/28/LearnOpenGL7-PerspectiveProjection/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>xiexian</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-10-28</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2023-10-29</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/openGL/">openGL</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/10/25/LearnOpenGL6-LightCaster/"><span class="level-item">OpenGL6_LightCaster</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar.png" alt="谢 娴"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">谢 娴</p><p class="is-size-6 is-block">游戏前端开发</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China,GuangZhou</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">18</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">5</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">4</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/luomuxie" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/luomuxie"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Dribbble" href="https://dribbble.com"><i class="fab fa-dribbble"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#视锥（Frustum）"><span class="level-left"><span class="level-item">1</span><span class="level-item">视锥（Frustum）</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#透视投影矩阵（Perspective-Projection-Matrix）"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">透视投影矩阵（Perspective Projection Matrix）</span></span></a></li></ul></li><li><a class="level is-mobile" href="#矩阵推导"><span class="level-left"><span class="level-item">2</span><span class="level-item">矩阵推导</span></span></a></li><li><a class="level is-mobile" href="#1、标准化视锥"><span class="level-left"><span class="level-item">3</span><span class="level-item">1、标准化视锥:</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#1、缩放"><span class="level-left"><span class="level-item">3.1</span><span class="level-item">1、缩放</span></span></a></li><li><a class="level is-mobile" href="#2、平移"><span class="level-left"><span class="level-item">3.2</span><span class="level-item">2、平移</span></span></a></li><li><a class="level is-mobile" href="#3、深度映射"><span class="level-left"><span class="level-item">3.3</span><span class="level-item">3、深度映射</span></span></a></li><li><a class="level is-mobile" href="#4、透视除法"><span class="level-left"><span class="level-item">3.4</span><span class="level-item">4、透视除法:</span></span></a></li><li><a class="level is-mobile" href="#5、z轴翻转"><span class="level-left"><span class="level-item">3.5</span><span class="level-item">5、z轴翻转:</span></span></a></li><li><a class="level is-mobile" href="#6、结果将上述矩阵相乘，可以得到最终的透视投影矩阵P："><span class="level-left"><span class="level-item">3.6</span><span class="level-item">6、结果将上述矩阵相乘，可以得到最终的透视投影矩阵P：</span></span></a></li></ul></li><li><a class="level is-mobile" href="#2、Z值映射的公式推理"><span class="level-left"><span class="level-item">4</span><span class="level-item">2、Z值映射的公式推理</span></span></a><ul class="menu-list"><ul class="menu-list"><li><a class="level is-mobile" href="#投影到近平面"><span class="level-left"><span class="level-item">4.1.1</span><span class="level-item">投影到近平面:</span></span></a></li></ul><li><a class="level is-mobile" href="#非线性深度映射"><span class="level-left"><span class="level-item">4.2</span><span class="level-item">非线性深度映射:</span></span></a></li><li><a class="level is-mobile" href="#推导新的Z值"><span class="level-left"><span class="level-item">4.3</span><span class="level-item">推导新的Z值:</span></span></a></li></ul></li><li><a class="level is-mobile" href="#3、透视公式-Z’-x3D-A-x2F-z-B"><span class="level-left"><span class="level-item">5</span><span class="level-item">3、透视公式 ( Z’ = A/z + B )</span></span></a></li><li><a class="level is-mobile" href="#4、透视除法-1"><span class="level-left"><span class="level-item">6</span><span class="level-item">4、透视除法</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/OpenGL/"><span class="level-start"><span class="level-item">OpenGL</span></span><span class="level-end"><span class="level-item tag">7</span></span></a></li><li><a class="level is-mobile" href="/categories/match/"><span class="level-start"><span class="level-item">match</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/shader/"><span class="level-start"><span class="level-item">shader</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/categories/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/"><span class="level-start"><span class="level-item">书籍阅读</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/categories/%E8%8B%B1%E6%96%87/"><span class="level-start"><span class="level-item">英文</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/English/"><span class="tag">English</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/match/"><span class="tag">match</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/openGL/"><span class="tag">openGL</span><span class="tag">6</span></a></div><div class="control"><a class="tags has-addons" href="/tags/shader/"><span class="tag">shader</span><span class="tag">3</span></a></div></div></div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">follow.it</h3><form action="" method="post" target="_blank"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="订阅"></div></div></form></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2023 xiexian</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">© 2019</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
