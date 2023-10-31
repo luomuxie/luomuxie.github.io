@@ -10855,11 +10855,6 @@ article.article .content .message.message-immersive {
 article.article .content .message.message-immersive .message-body {
   border: none;
 }
-article.article .content a {
-img
-  margin: auto;
-  display: block;
-}
 article.article .article-tags {
   display: flex;
   flex-wrap: wrap;
@@ -11649,8 +11644,8 @@ figure.highlight.foldable div.level-left {
 @media screen and (min-width: 1280px) {
   .is-1-column .container,
   .is-2-column .container {
-    max-width: 1024px;
-    width: 1024px;
+    max-width: 960px;
+    width: 960px;
   }
 }
 @media screen and (min-width: 1472px) {
