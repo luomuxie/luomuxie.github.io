@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>LearnOpenGL8-StencilTesting - Hexo</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Hexo"><meta name="msapplication-TileImage" content="/img/favicon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Hexo"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="模板测试（Stencil Testing）是3D图形渲染中的一个高级技术，它利用模板缓冲区（Stencil Buffer）来控制像素是否应该被绘制。这个技术可以用于多种渲染效果，如轮廓绘制、裁剪（Clipping）、阴影生成等。下面是一个对模板测试的总结："><meta property="og:type" content="blog"><meta property="og:title" content="LearnOpenGL8-StencilTesting"><meta property="og:url" content="http://example.com/2023/11/05/LearnOpenGL8-StencilTesting/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="模板测试（Stencil Testing）是3D图形渲染中的一个高级技术，它利用模板缓冲区（Stencil Buffer）来控制像素是否应该被绘制。这个技术可以用于多种渲染效果，如轮廓绘制、裁剪（Clipping）、阴影生成等。下面是一个对模板测试的总结："><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20231105101217340.png"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20231105102124842.png"><meta property="article:published_time" content="2023-11-05T00:12:19.000Z"><meta property="article:modified_time" content="2023-11-05T02:21:48.177Z"><meta property="article:author" content="xiexian"><meta property="article:tag" content="openGL"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20231105101217340.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2023/11/05/LearnOpenGL8-StencilTesting/"},"headline":"LearnOpenGL8-StencilTesting","image":["https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20231105101217340.png","https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20231105102124842.png"],"datePublished":"2023-11-05T00:12:19.000Z","dateModified":"2023-11-05T02:21:48.177Z","author":{"@type":"Person","name":"xiexian"},"publisher":{"@type":"Organization","name":"Hexo","logo":{"@type":"ImageObject","url":"http://example.com/img/logo.svg"}},"description":"模板测试（Stencil Testing）是3D图形渲染中的一个高级技术，它利用模板缓冲区（Stencil Buffer）来控制像素是否应该被绘制。这个技术可以用于多种渲染效果，如轮廓绘制、裁剪（Clipping）、阴影生成等。下面是一个对模板测试的总结："}</script><link rel="canonical" href="http://example.com/2023/11/05/LearnOpenGL8-StencilTesting/"><link rel="icon" href="/img/favicon.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="My GitHub" href="https://github.com/luomuxie"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-11-05T00:12:19.000Z" title="11/5/2023, 8:12:19 AM">2023-11-05</time>发表</span><span class="level-item"><time dateTime="2023-11-05T02:21:48.177Z" title="11/5/2023, 10:21:48 AM">2023-11-05</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/OpenGL/">OpenGL</a></span><span class="level-item">23 分钟读完 (大约3485个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">LearnOpenGL8-StencilTesting</h1><div class="content"><p>模板测试（Stencil Testing）是3D图形渲染中的一个高级技术，它利用模板缓冲区（Stencil Buffer）来控制像素是否应该被绘制。这个技术可以用于多种渲染效果，如轮廓绘制、裁剪（Clipping）、阴影生成等。下面是一个对模板测试的总结：<span id="more"></span></p>
+<h2 id="1-模板缓冲区的作用"><a class="markdownIt-Anchor" href="#1-模板缓冲区的作用"></a> 1、模板缓冲区的作用</h2>
+<p>模板缓冲区是帧缓冲的一部分，可以看作是一个额外的图像，它为每个像素提供额外的信息。这些信息可以用于决定是否以及如何绘制一个像素。</p>
+<h2 id="1-基本原理"><a class="markdownIt-Anchor" href="#1-基本原理"></a> 1、<strong>基本原理：</strong></h2>
+<ul>
+<li><strong>写入模板值：</strong> 在渲染过程中，可以选择是否在模板缓冲区中为每个像素写入一个值。</li>
+<li><strong>模板测试：</strong> 在绘制像素之前，会根据模板缓冲区中的值和预设的模板测试条件来决定是否绘制该像素。</li>
+</ul>
+<h2 id="2-模板测试的步骤"><a class="markdownIt-Anchor" href="#2-模板测试的步骤"></a> 2、模板测试的步骤：</h2>
+<ul>
+<li><strong>清除模板缓冲区：</strong> 在渲染开始前，通常需要清除模板缓冲区。</li>
+<li><strong>设置模板测试条件：</strong> 通过<code>glStencilFunc</code>设置模板测试的条件。</li>
+<li><strong>渲染与写入模板：</strong> 在第一次渲染中，根据设定的条件决定哪些像素将更新模板缓冲区的值。</li>
+<li><strong>使用模板值来控制渲染：</strong> 在后续的渲染步骤中，利用模板值来决定是否和怎样绘制像素。</li>
+</ul>
+<h2 id="3-opengl中的模板操作"><a class="markdownIt-Anchor" href="#3-opengl中的模板操作"></a> 3、<strong>OpenGL中的模板操作：</strong></h2>
+<h3 id="glstencilmask-控制模板缓冲区中哪些位可以被更新"><a class="markdownIt-Anchor" href="#glstencilmask-控制模板缓冲区中哪些位可以被更新"></a> <strong>glStencilMask：</strong> 控制模板缓冲区中哪些位可以被更新。</h3>
+<p><code>glStencilMask</code>函数在OpenGL中用于控制哪些位可以被写入模板缓冲区。当调用这个函数时，为它提供一个位掩码，这个掩码决定了哪些位可以被更新。</p>
+<p>具体来说：</p>
+<ul>
+<li><strong>glStencilMask(0xFF)</strong>: 这个调用允许所有位被写入模板缓冲区。在这里，0xFF是一个16进制数，其二进制表示为11111111，表示模板缓冲区的每一位都可以被更新。</li>
+<li><strong>glStencilMask(0x00)</strong>: 这个调用不允许任何位被写入模板缓冲区。其二进制表示为00000000，表示所有的位都被屏蔽了，因此模板缓冲区的值在这个掩码下不会发生改变。</li>
+</ul>
+<p>在使用模板测试进行轮廓绘制时，通常会设置<code>glStencilMask(0xFF)</code>来允许在第一遍绘制时写入模板缓冲区。然后，在绘制放大的轮廓对象之前，会调用<code>glStencilMask(0x00)</code>，这样在绘制放大的对象时就不会修改模板缓冲区的内容。这确保了仅有第一遍绘制的物体影响了模板缓冲区的内容，第二遍绘制（放大的物体）时只是利用模板缓冲区的值来决定是否绘制像素，但不改变模板缓冲区的值。</p>
+<p>使用<code>glStencilMask</code>是管理和控制模板测试细节的重要手段之一。</p>
+<p>看一些例子：</p>
+<ol>
+<li><strong>默认掩码</strong>:
+<ul>
+<li><code>glStencilMask(0xFF)</code> 或 <code>glStencilMask(255)</code>：允许所有8个位被修改。这是典型的8位模板缓冲区的默认设置。</li>
+</ul>
+</li>
+<li><strong>禁止写入</strong>:
+<ul>
+<li><code>glStencilMask(0x00)</code>：禁止对模板缓冲区的任何位进行修改。</li>
+</ul>
+</li>
+<li><strong>选择性掩码</strong>:
+<ul>
+<li><code>glStencilMask(0xF0)</code>：只有模板缓冲区的高四位能被修改（1111 0000）。</li>
+<li><code>glStencilMask(0x0F)</code>：只有模板缓冲区的低四位能被修改（0000 1111）。</li>
+</ul>
+</li>
+<li><strong>交替位</strong>:
+<ul>
+<li><code>glStencilMask(0xAA)</code>：模板缓冲区的每个偶数位可以被修改（1010 1010）。</li>
+<li><code>glStencilMask(0x55)</code>：模板缓冲区的每个奇数位可以被修改（0101 0101）。</li>
+</ul>
+</li>
+</ol>
+<p>在更复杂的场景中，可能会使用这种掩码来维护模板缓冲区中的某些位的值，而其他位可以随着不同的渲染步骤而改变。例如，在一个多通道渲染过程中，可能希望一部分位保留一些标记信息，而其他位则用于执行标准的模板测试和写入操作。通过使用不同的掩码，可以保护某些位不被某次特定的渲染操作修改，从而实现更高级的渲染技巧。</p>
+<p>在实际使用OpenGL进行图形渲染时，模板缓冲区和<code>glStencilMask</code>可以用于许多高级技术。这里举一些实际应用的例子：1. 多层渲染效果</p>
+<p>假设想在一个3D场景中创建一个具有多层次效果的玻璃窗，其中一些图案只出现在特定的区域。可以使用<code>glStencilMask</code>来限制某些位，以便在这些位上绘制特定的图案。2. 镜像效果如果要在场景中加入水面或镜面，并在其上产生反射，可以先使用模板测试来绘制水面/镜面区域，然后通过调整<code>glStencilMask</code>来保护这些区域，之后进行反射对象的绘制。3. 阴影体积,在生成阴影时，可以使用模板缓冲区来累加阴影体积。这里，<code>glStencilMask</code>可以用于控制哪些位负责记录阴影体积的累加。4. 门户渲染,在一个有门户系统的场景（比如多个房间通过门连接），可以使用模板缓冲区来确保只有通过门口可见的区域被渲染。这可以通过在渲染每个房间之前设置<code>glStencilMask</code>来实现，只有对应的门户位被设为可写。5. 分级透明度,在渲染具有不同透明度层级的对象时，可以使用模板缓冲区来确保按正确的顺序渲染这些层。例如，先渲染不透明物体，然后使用<code>glStencilMask</code>来渲染半透明和全透明物体。6. 裁剪区域使用模板缓冲区来实现复杂的裁剪区域，比如文字或其他图案裁剪。可以设置<code>glStencilMask</code>来裁剪场景的特定部分，然后只渲染这些部分。</p>
+<p>实际的应用场景可能需要结合多个OpenGL状态和操作，<code>glStencilMask</code>提供了对模板缓冲区写入操作的更细致的控制，使得这些复杂效果的实现成为可能。</p>
+<h3 id="glstencilfunc-设置模板测试的条件"><a class="markdownIt-Anchor" href="#glstencilfunc-设置模板测试的条件"></a> glStencilFunc：** 设置模板测试的条件。</h3>
+<p><code>glStencilFunc(GLenum func, GLint ref, GLuint mask)</code>此函数决定如何使用模板缓冲值来决定片段是否应被丢弃或保留。</p>
+<p>参数解释：</p>
+<ul>
+<li>
+<dl>
+<dt>func</dt>
+<dd>指定一个比较函数，该函数用于将参考值与存储在模板缓冲中的值进行比较。</dd>
+</dl>
+<ul>
+<li><code>GL_NOTEQUAL</code>: 表示只有当参考值不等于模板缓冲中的值时，片段才会被保留。</li>
+</ul>
+</li>
+<li>
+<dl>
+<dt>ref</dt>
+<dd>提供的参考值，将与模板缓冲中的值进行比较。</dd>
+</dl>
+<ul>
+<li><code>1</code>: 在这里，参考值是1。</li>
+</ul>
+</li>
+<li>
+<dl>
+<dt>mask</dt>
+<dd>一个掩码，与参考值和模板缓冲中的值按位与运算。</dd>
+</dl>
+<ul>
+<li><code>0xFF</code>: 代表255或二进制中的<code>11111111</code>。这意味着考虑所有的位。</li>
+</ul>
+</li>
+</ul>
+<h3 id="glstencilop-当模板测试和或深度测试通过或失败时指定模板缓冲区的更新操作"><a class="markdownIt-Anchor" href="#glstencilop-当模板测试和或深度测试通过或失败时指定模板缓冲区的更新操作"></a> glStencilOp：** 当模板测试和/或深度测试通过或失败时，指定模板缓冲区的更新操作。</h3>
+<p>glStencilOp(GLenum sfail, GLenum dpfail, GLenum dppass)此函数定义了当模板测试失败或成功时模板缓冲中的值应该如何更新。</p>
+<p>参数解释：</p>
+<ul>
+<li>
+<dl>
+<dt>sfail</dt>
+<dd>如果模板测试失败，应该采取什么行动。</dd>
+</dl>
+<ul>
+<li><code>GL_KEEP</code>: 如果模板测试失败，保持当前模板缓冲中的值不变。</li>
+</ul>
+</li>
+<li>
+<dl>
+<dt>dpfail</dt>
+<dd>如果模板测试成功，但深度测试失败，应该采取什么行动。</dd>
+</dl>
+<ul>
+<li><code>GL_KEEP</code>: 如果深度测试失败，保持当前模板缓冲中的值不变。</li>
+</ul>
+</li>
+<li>
+<dl>
+<dt>dppass</dt>
+<dd>如果模板测试和深度测试都成功，应该采取什么行动。</dd>
+</dl>
+<ul>
+<li><code>GL_REPLACE</code>: 如果两个测试都通过，则使用当前的模板测试的参考值替换模板缓冲中的值。</li>
+</ul>
+</li>
+</ul>
+<h2 id="4-常见应用"><a class="markdownIt-Anchor" href="#4-常见应用"></a> 4、<strong>常见应用</strong></h2>
+<ul>
+<li><strong>裁剪：</strong> 使用模板缓冲区来限制渲染区域。</li>
+<li><strong>轮廓绘制：</strong> 通过在模板缓冲区中标记物体的位置，然后渲染扩大的版本来生成轮廓。</li>
+<li><strong>镜面反射：</strong> 利用模板测试来渲染反射物体。</li>
+<li><strong>阴影体积：</strong> 在光照计算中利用模板测试来生成阴影。</li>
+<li><strong>多通道渲染：</strong> 使用模板缓冲区来实现多个渲染通道。</li>
+</ul>
+<p>模板测试是一个强大的工具，它通过对每个像素的细粒度控制来实现复杂的视觉效果。虽然理解起来可能有些复杂，但一旦掌握，它可以极大地增强3D图形程序的视觉效果和性能。</p>
+<h2 id="5-例子轮廓绘制"><a class="markdownIt-Anchor" href="#5-例子轮廓绘制"></a> 5、例子：轮廓绘制</h2>
+<ol>
+<li>
+<p><strong>准备工作</strong>:</p>
+<ul>
+<li>开启模板缓冲功能。</li>
+</ul>
+</li>
+<li>
+<p><strong>设置模板测试规则</strong>:</p>
+<ul>
+<li>在开始绘制任何物体之前，首先要设置模板测试的规则。</li>
+<li>比如，可以设置规则为：“只渲染那些与先前标记的部分不重叠的区域”。</li>
+</ul>
+</li>
+<li>
+<p><strong>绘制原始物体</strong>:</p>
+<ul>
+<li>接下来，使用想要的颜色或材质绘制物体。</li>
+<li>由于模板测试规则已经设置，所以模板缓冲区会相应地被更新。</li>
+</ul>
+</li>
+<li>
+<p><strong>绘制放大的物体</strong>:</p>
+<ul>
+<li>现在，稍微放大这个物体。</li>
+<li>由于已经设置了模板测试的规则，所以只有那些与原始立方体不重叠的部分才会被画出来。这部分就是轮廓。</li>
+</ul>
+</li>
+<li>
+<p><strong>结果</strong>:</p>
+<ul>
+<li>现在应该能在屏幕上看到一个有轮廓的立方体。</li>
+</ul>
+</li>
+</ol>
+<img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20231105101217340.png" alt="image-20231105101217340" style="zoom:70%;" />
+<p>核心代码：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// -----------------------------</span></span><br><span class="line">	glEnable(GL_DEPTH_TEST);</span><br><span class="line">	glEnable(GL_STENCIL_TEST);</span><br><span class="line"></span><br><span class="line">	glDepthFunc(GL_LESS);	</span><br><span class="line">	glStencilFunc(GL_NOTEQUAL, <span class="number">1</span>, <span class="number">0xFF</span>);</span><br><span class="line">	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);</span><br><span class="line">	<span class="type">float</span> scale = <span class="number">1.1</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (!glfwWindowShouldClose(window))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//set the time</span></span><br><span class="line">		<span class="type">float</span> currentFrame = glfwGetTime();</span><br><span class="line">		deltaTime = currentFrame - lastFrame;</span><br><span class="line">		lastFrame = currentFrame;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//process the input</span></span><br><span class="line">		processInput(window);</span><br><span class="line">		<span class="comment">//clear the color buffer and the depth buffer</span></span><br><span class="line">		<span class="comment">//enable the depth test</span></span><br><span class="line">		<span class="comment">//glEnable(GL_DEPTH_TEST);</span></span><br><span class="line">		glClearColor(<span class="number">0.11</span>f, <span class="number">0.11</span>f, <span class="number">0.11</span>f, <span class="number">1.0</span>f);</span><br><span class="line">		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT |GL_STENCIL_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">		<span class="comment">//set the shader</span></span><br><span class="line">		shader.use();		</span><br><span class="line">		glm::<span class="type">mat4</span> view = camera.GetViewMatrix();						</span><br><span class="line">		glm::<span class="type">mat4</span> projection = glm::perspective(glm::<span class="built_in">radians</span>(camera.Zoom), (<span class="type">float</span>)SCR_WIDTH / (<span class="type">float</span>)SCR_HEIGHT,</span><br><span class="line">						<span class="number">0.1</span>f, <span class="number">100.0</span>f);		</span><br><span class="line">		shader.setMat4(shader.PROJECTION, projection);</span><br><span class="line">		shader.setMat4(shader.VIEW, view);</span><br><span class="line">		</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">		<span class="comment">//draw the floor----------------------------------------------------------------------------</span></span><br><span class="line">		<span class="comment">//set the model matrix</span></span><br><span class="line">		glm::<span class="type">mat4</span> model = glm::<span class="type">mat4</span>(<span class="number">2.0</span>f);		</span><br><span class="line">		model = glm::translate(model, glm::<span class="type">vec3</span>(<span class="number">0.0</span>f, <span class="number">-1.0</span>f, <span class="number">0.0</span>f));		</span><br><span class="line">		shader.setMat4(shader.MODEL, model);</span><br><span class="line">		<span class="comment">//</span></span><br><span class="line">		glStencilMask(<span class="number">0x00</span>);</span><br><span class="line">		glBindVertexArray(planeVAO);</span><br><span class="line">		glBindTexture(GL_TEXTURE_2D, floorTexture);</span><br><span class="line">		glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">6</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 1st. render pass, draw objects as normal, writing to the stencil buffer</span></span><br><span class="line">		<span class="comment">// ------------------------------------------------------------------------------</span></span><br><span class="line">		glStencilFunc(GL_ALWAYS, <span class="number">1</span>, <span class="number">0xFF</span>);</span><br><span class="line">		glStencilMask(<span class="number">0xFF</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// cube1</span></span><br><span class="line">		shader.use();</span><br><span class="line">		glBindVertexArray(cubeVAO);</span><br><span class="line">		glActiveTexture(GL_TEXTURE0);</span><br><span class="line">		glBindTexture(GL_TEXTURE_2D, cubeTexture);</span><br><span class="line">		model = glm::<span class="type">mat4</span>(<span class="number">1.0</span>f);</span><br><span class="line">		model = glm::translate(model, glm::<span class="type">vec3</span>(<span class="number">-1.0</span>f, <span class="number">0.0</span>f, <span class="number">-1.0</span>f));</span><br><span class="line">		shader.setMat4(shader.MODEL, model);</span><br><span class="line">		glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">36</span>);</span><br><span class="line"></span><br><span class="line">		glStencilFunc(GL_NOTEQUAL, <span class="number">1</span>, <span class="number">0xFF</span>);</span><br><span class="line">		glStencilMask(<span class="number">0x00</span>);</span><br><span class="line">		glDisable(GL_DEPTH_TEST);</span><br><span class="line">		shaderSingleColor.use();</span><br><span class="line">		shaderSingleColor.setMat4(shaderSingleColor.VIEW, view);</span><br><span class="line">		shaderSingleColor.setMat4(shaderSingleColor.PROJECTION, projection);</span><br><span class="line">		<span class="comment">//cubes&#x27;s border</span></span><br><span class="line">		glBindVertexArray(cubeVAO);</span><br><span class="line">		glBindTexture(GL_TEXTURE_2D, cubeTexture);</span><br><span class="line">		model = glm::<span class="type">mat4</span>(<span class="number">1.0</span>f);</span><br><span class="line">		model = glm::translate(model, glm::<span class="type">vec3</span>(<span class="number">-1.0</span>f, <span class="number">0.0</span>f, <span class="number">-1.0</span>f));</span><br><span class="line">		model = glm::scale(model, glm::<span class="type">vec3</span>(scale, scale, scale));</span><br><span class="line">		shaderSingleColor.setMat4(shaderSingleColor.MODEL, model);</span><br><span class="line">		glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">36</span>);</span><br><span class="line">		</span><br><span class="line"></span><br><span class="line">		<span class="comment">//cube 2</span></span><br><span class="line">		glStencilFunc(GL_ALWAYS, <span class="number">1</span>, <span class="number">0xFF</span>);</span><br><span class="line">		glStencilMask(<span class="number">0xFF</span>);</span><br><span class="line">		glEnable(GL_DEPTH_TEST);</span><br><span class="line">		shader.use();</span><br><span class="line">		shader.setMat4(shader.PROJECTION, projection);</span><br><span class="line">		shader.setMat4(shader.VIEW, view);</span><br><span class="line">		model = glm::<span class="type">mat4</span>(<span class="number">1.0</span>f);</span><br><span class="line">		model = glm::translate(model, glm::<span class="type">vec3</span>(<span class="number">0.0</span>f, <span class="number">0.0</span>f, <span class="number">0.0</span>f));</span><br><span class="line">		shader.setMat4(shader.MODEL, model);</span><br><span class="line">		glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">36</span>);</span><br><span class="line"></span><br><span class="line">		glStencilFunc(GL_NOTEQUAL, <span class="number">1</span>, <span class="number">0xFF</span>);</span><br><span class="line">		glStencilMask(<span class="number">0x00</span>);</span><br><span class="line">		<span class="comment">//glDisable(GL_DEPTH_TEST); </span></span><br><span class="line">		shaderSingleColor.use();</span><br><span class="line">		shaderSingleColor.setMat4(shaderSingleColor.VIEW, view);</span><br><span class="line">		shaderSingleColor.setMat4(shaderSingleColor.PROJECTION, projection);</span><br><span class="line">		model = glm::<span class="type">mat4</span>(<span class="number">1.0</span>f);</span><br><span class="line">		model = glm::translate(model, glm::<span class="type">vec3</span>(<span class="number">0.0</span>f, <span class="number">0.0</span>f, <span class="number">0.0</span>f));</span><br><span class="line">		model = glm::scale(model, glm::<span class="type">vec3</span>(scale, scale, scale));</span><br><span class="line">		shaderSingleColor.setMat4(shaderSingleColor.MODEL, model);</span><br><span class="line">		glDrawArrays(GL_TRIANGLES, <span class="number">0</span>, <span class="number">36</span>);</span><br><span class="line">		glBindVertexArray(<span class="number">0</span>);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//reset the stencil test</span></span><br><span class="line">		glStencilMask(<span class="number">0xFF</span>);</span><br><span class="line">		glStencilFunc(GL_ALWAYS, <span class="number">0</span>, <span class="number">0xFF</span>);</span><br><span class="line">		glEnable(GL_DEPTH_TEST);</span><br><span class="line"></span><br><span class="line">		</span><br><span class="line">		<span class="comment">//swap the buffer</span></span><br><span class="line">		glfwSwapBuffers(window);</span><br><span class="line">		<span class="comment">//process the event</span></span><br><span class="line">		glfwPollEvents();</span><br><span class="line">				</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="独立边框"><a class="markdownIt-Anchor" href="#独立边框"></a> 独立边框</h3>
+<ol>
+<li>在渲染每个立方体之前设置<code>glStencilFunc</code>和<code>glStencilMask</code>，以便在模板缓冲区中为每个立方体写入不同的值。</li>
+<li>在渲染边框时，使用与立方体相匹配的模板值来确保边框只在正确的立方体周围绘制。</li>
+</ol>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ... [其他代码] ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 1st cube - Setup stencil buffer write for first cube</span></span><br><span class="line">glStencilFunc(GL_ALWAYS, <span class="number">1</span>, <span class="number">0xFF</span>); <span class="comment">// Set any stencil to 1</span></span><br><span class="line">glStencilMask(<span class="number">0xFF</span>); <span class="comment">// Write to stencil buffer</span></span><br><span class="line"><span class="comment">// Draw first cube as normal</span></span><br><span class="line"><span class="comment">// ... [绘制第一个立方体的代码] ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Draw border for 1st cube</span></span><br><span class="line">glStencilFunc(GL_NOTEQUAL, <span class="number">1</span>, <span class="number">0xFF</span>); <span class="comment">// Pass test if stencil value is not 1</span></span><br><span class="line">glStencilMask(<span class="number">0x00</span>); <span class="comment">// Don&#x27;t write anything to stencil buffer</span></span><br><span class="line">glDisable(GL_DEPTH_TEST);</span><br><span class="line"><span class="comment">// ... [绘制第一个立方体的边框代码] ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2nd cube - Setup stencil buffer write for second cube</span></span><br><span class="line">glStencilFunc(GL_ALWAYS, <span class="number">2</span>, <span class="number">0xFF</span>); <span class="comment">// Set any stencil to 2</span></span><br><span class="line">glStencilMask(<span class="number">0xFF</span>); <span class="comment">// Write to stencil buffer</span></span><br><span class="line">glEnable(GL_DEPTH_TEST);</span><br><span class="line"><span class="comment">// Draw second cube as normal</span></span><br><span class="line"><span class="comment">// ... [绘制第二个立方体的代码] ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Draw border for 2nd cube</span></span><br><span class="line">glStencilFunc(GL_NOTEQUAL, <span class="number">2</span>, <span class="number">0xFF</span>); <span class="comment">// Pass test if stencil value is not 2</span></span><br><span class="line">glStencilMask(<span class="number">0x00</span>); <span class="comment">// Don&#x27;t write anything to stencil buffer</span></span><br><span class="line"><span class="comment">// ... [绘制第二个立方体的边框代码] ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// ... [其他代码] ...</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="这里为什么要用2呢可以直接清理第一个的模板然后用1吗"><a class="markdownIt-Anchor" href="#这里为什么要用2呢可以直接清理第一个的模板然后用1吗"></a> 这里为什么要用2呢，可以直接清理第一个的模板然后用1吗?</h3>
+<p>可以选择清除模板缓冲区并再次使用值 1，但这通常不是优选的做法，因为清除模板缓冲区可能会影响性能，并且如果正在渲染的场景较复杂时，也会更加复杂。相反，使用不同的值来区分不同的对象是更高效且更常见的做法。这样可以在一个渲染通道中渲染多个对象，然后为每个对象渲染它们的边框，而不需要在每次绘制新对象时都清空模板缓冲区。</p>
+<p>例如，如果有多个物体，每个物体的边框都要用不同的颜色或风格渲染，可以为每个物体分配一个唯一的模板值，然后在渲染边框时检查对应的模板值来决定使用哪种颜色或风格。</p>
+<p>因此，使用值 1、2、3 (8位，0-255的范围)等来标记不同的物体是标准做法。这样做的主要好处是不需要在每个渲染步骤之间清除模板缓冲区，这样可以保持渲染效率并简化代码逻辑。</p>
+<p><img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20231105102124842.png" alt="image-20231105102124842" /></p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>LearnOpenGL8-StencilTesting</p><p><a href="http://example.com/2023/11/05/LearnOpenGL8-StencilTesting/">http://example.com/2023/11/05/LearnOpenGL8-StencilTesting/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>xiexian</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-11-05</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2023-11-05</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/openGL/">openGL</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/10/28/LearnOpenGL7-PerspectiveProjection/"><span class="level-item">LearnOpenGL7-PerspectiveProjection</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar.png" alt="谢 娴"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">谢 娴</p><p class="is-size-6 is-block">游戏前端开发</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China,GuangZhou</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">19</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">5</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">4</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/luomuxie" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/luomuxie"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Dribbble" href="https://dribbble.com"><i class="fab fa-dribbble"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#1-模板缓冲区的作用"><span class="level-left"><span class="level-item">1</span><span class="level-item"> 1、模板缓冲区的作用</span></span></a></li><li><a class="level is-mobile" href="#1-基本原理"><span class="level-left"><span class="level-item">2</span><span class="level-item"> 1、基本原理：</span></span></a></li><li><a class="level is-mobile" href="#2-模板测试的步骤"><span class="level-left"><span class="level-item">3</span><span class="level-item"> 2、模板测试的步骤：</span></span></a></li><li><a class="level is-mobile" href="#3-opengl中的模板操作"><span class="level-left"><span class="level-item">4</span><span class="level-item"> 3、OpenGL中的模板操作：</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#glstencilmask-控制模板缓冲区中哪些位可以被更新"><span class="level-left"><span class="level-item">4.1</span><span class="level-item"> glStencilMask： 控制模板缓冲区中哪些位可以被更新。</span></span></a></li><li><a class="level is-mobile" href="#glstencilfunc-设置模板测试的条件"><span class="level-left"><span class="level-item">4.2</span><span class="level-item"> glStencilFunc：** 设置模板测试的条件。</span></span></a></li><li><a class="level is-mobile" href="#glstencilop-当模板测试和或深度测试通过或失败时指定模板缓冲区的更新操作"><span class="level-left"><span class="level-item">4.3</span><span class="level-item"> glStencilOp：** 当模板测试和/或深度测试通过或失败时，指定模板缓冲区的更新操作。</span></span></a></li></ul></li><li><a class="level is-mobile" href="#4-常见应用"><span class="level-left"><span class="level-item">5</span><span class="level-item"> 4、常见应用</span></span></a></li><li><a class="level is-mobile" href="#5-例子轮廓绘制"><span class="level-left"><span class="level-item">6</span><span class="level-item"> 5、例子：轮廓绘制</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#独立边框"><span class="level-left"><span class="level-item">6.1</span><span class="level-item"> 独立边框</span></span></a></li><li><a class="level is-mobile" href="#这里为什么要用2呢可以直接清理第一个的模板然后用1吗"><span class="level-left"><span class="level-item">6.2</span><span class="level-item"> 这里为什么要用2呢，可以直接清理第一个的模板然后用1吗?</span></span></a></li></ul></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/OpenGL/"><span class="level-start"><span class="level-item">OpenGL</span></span><span class="level-end"><span class="level-item tag">8</span></span></a></li><li><a class="level is-mobile" href="/categories/match/"><span class="level-start"><span class="level-item">match</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/shader/"><span class="level-start"><span class="level-item">shader</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/categories/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/"><span class="level-start"><span class="level-item">书籍阅读</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/categories/%E8%8B%B1%E6%96%87/"><span class="level-start"><span class="level-item">英文</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/English/"><span class="tag">English</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/match/"><span class="tag">match</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/openGL/"><span class="tag">openGL</span><span class="tag">7</span></a></div><div class="control"><a class="tags has-addons" href="/tags/shader/"><span class="tag">shader</span><span class="tag">3</span></a></div></div></div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">follow.it</h3><form action="" method="post" target="_blank"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="订阅"></div></div></form></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2023 xiexian</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">© 2019</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mhchem.min.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
