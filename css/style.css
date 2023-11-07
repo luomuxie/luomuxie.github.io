@@ -11677,14 +11677,6 @@ figure.highlight.foldable div.level-left {
     padding: 1.5rem 1rem;
   }
 }
-加个背景图片,
-.is-2-column {
-  background-image: url("https://res.lolicon.app/bilibili/bg_small.png");
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-}
 .widget {
   background-color: rgba(255,255,255,0.812);
 }
