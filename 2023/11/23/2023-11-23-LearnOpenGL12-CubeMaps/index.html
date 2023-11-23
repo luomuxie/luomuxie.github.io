@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>LearnOpenGL12-CubeMaps - Hexo</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Hexo"><meta name="msapplication-TileImage" content="/img/favicon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Hexo"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="Skybox的基本原理  定义和用途： Skybox使用立方体映射（Cubemap）的基本原理相对简单而强大。立方体映射是一种将6个2D纹理组合成一个立方体的3D纹理的技术，它用于呈现3D场景的远景  实现技术：   六个面的纹理：为了创建一个Skybox，首先需要准备6个2D纹理，它们代表了虚拟世界的远景，通常包括前、后、左、右、上和下六个方向。这些纹理构成了一个完整的立方体，每个纹理对应立方"><meta property="og:type" content="blog"><meta property="og:title" content="LearnOpenGL12-CubeMaps"><meta property="og:url" content="http://example.com/2023/11/23/2023-11-23-LearnOpenGL12-CubeMaps/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="Skybox的基本原理  定义和用途： Skybox使用立方体映射（Cubemap）的基本原理相对简单而强大。立方体映射是一种将6个2D纹理组合成一个立方体的3D纹理的技术，它用于呈现3D场景的远景  实现技术：   六个面的纹理：为了创建一个Skybox，首先需要准备6个2D纹理，它们代表了虚拟世界的远景，通常包括前、后、左、右、上和下六个方向。这些纹理构成了一个完整的立方体，每个纹理对应立方"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20231123075233969.png"><meta property="article:published_time" content="2023-11-22T16:00:00.000Z"><meta property="article:modified_time" content="2023-11-23T00:25:09.412Z"><meta property="article:author" content="码媛飞飞"><meta property="article:tag" content="openGL"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20231123075233969.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2023/11/23/2023-11-23-LearnOpenGL12-CubeMaps/"},"headline":"LearnOpenGL12-CubeMaps","image":["https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20231123075233969.png"],"datePublished":"2023-11-22T16:00:00.000Z","dateModified":"2023-11-23T00:25:09.412Z","author":{"@type":"Person","name":"码媛飞飞"},"publisher":{"@type":"Organization","name":"Hexo","logo":{"@type":"ImageObject","url":"http://example.com/img/logo.svg"}},"description":"Skybox的基本原理  定义和用途： Skybox使用立方体映射（Cubemap）的基本原理相对简单而强大。立方体映射是一种将6个2D纹理组合成一个立方体的3D纹理的技术，它用于呈现3D场景的远景  实现技术：   六个面的纹理：为了创建一个Skybox，首先需要准备6个2D纹理，它们代表了虚拟世界的远景，通常包括前、后、左、右、上和下六个方向。这些纹理构成了一个完整的立方体，每个纹理对应立方"}</script><link rel="canonical" href="http://example.com/2023/11/23/2023-11-23-LearnOpenGL12-CubeMaps/"><link rel="icon" href="/img/favicon.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="My GitHub" href="https://github.com/luomuxie"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-11-22T16:00:00.000Z" title="11/23/2023, 12:00:00 AM">2023-11-23</time>发表</span><span class="level-item"><time dateTime="2023-11-23T00:25:09.412Z" title="11/23/2023, 8:25:09 AM">2023-11-23</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/OpenGL/">OpenGL</a></span><span class="level-item">7 分钟读完 (大约1105个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">LearnOpenGL12-CubeMaps</h1><div class="content"><h2 id="skybox的基本原理"><a class="markdownIt-Anchor" href="#skybox的基本原理"></a> Skybox的基本原理</h2>
+<h3 id="定义和用途"><a class="markdownIt-Anchor" href="#定义和用途"></a> <strong>定义和用途</strong>：</h3>
+<p>Skybox使用立方体映射（Cubemap）的基本原理相对简单而强大。立方体映射是一种将6个2D纹理组合成一个立方体的3D纹理的技术，它用于呈现3D场景的远景</p>
+<h3 id="实现技术"><a class="markdownIt-Anchor" href="#实现技术"></a> <strong>实现技术</strong>：</h3>
+<ol>
+<li>
+<p><strong>六个面的纹理</strong>：为了创建一个Skybox，首先需要准备6个2D纹理，它们代表了虚拟世界的远景，通常包括前、后、左、右、上和下六个方向。这些纹理构成了一个完整的立方体，每个纹理对应立方体的一个面。<span id="more"></span></p>
+<img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20231123075233969.png" alt="image-20231123075233969" style="zoom:50%;" />
+</li>
+<li>
+<p><strong>立方体贴图</strong>：这6个纹理被组合成一个立方体贴图（Cubemap），它是一个特殊的3D纹理。立方体贴图具有6个面，每个面都对应着一个2D纹理。这个立方体贴图实际上是一个包含6个纹理图层的3D纹理，其中每个图层代表了一个纹理面。</p>
+<ol>
+<li>
+<p>准备六张纹理图片，分别代表立方体贴图的六个面（右、左、上、下、前、后）。</p>
+</li>
+<li>
+<p>创建立方体贴图对象，并分别绑定纹理到每个面上。</p>
+</li>
+<li>
+<p>设置立方体贴图的参数，包括过滤方式和坐标环绕方式。</p>
+</li>
+<li>
+<p>加载纹理图片并将其绑定到立方体贴图的对应面上。</p>
+<p>加载cubemaps代码：<strong><a target="_blank" rel="noopener" href="https://github.com/luomuxie/LearnOpenGL/blob/master/Glitter/Sources/func.cpp">https://github.com/luomuxie/LearnOpenGL/blob/master/Glitter/Sources/func.cpp</a></strong></p>
+</li>
+</ol>
+<p><strong>加载立方体贴图与加载普通二维贴图的主要区别</strong></p>
+<ol>
+<li>纹理目标：
+<ul>
+<li>对于普通二维贴图，使用的纹理目标是 <code>GL_TEXTURE_2D</code>。</li>
+<li>对于立方体贴图，使用的纹理目标是 <code>GL_TEXTURE_CUBE_MAP</code>。</li>
+</ul>
+</li>
+<li>纹理坐标的差异：
+<ul>
+<li>在普通二维贴图中，通常使用 2D 纹理坐标 <code>(s, t)</code>，其中 <code>(0, 0)</code> 表示纹理的左下角，<code>(1, 1)</code> 表示右上角。</li>
+<li>在立方体贴图中，使用 3D 纹理坐标 <code>(x, y, z)</code>，其中 <code>(0, 0, 0)</code> 表示立方体贴图的中心，而 <code>(1, 1, 1)</code> 表示立方体贴图的边界。通常，这个坐标系用于访问立方体贴图的不同面，例如 <code>(1, 0, 0)</code> 代表右侧面。</li>
+</ul>
+</li>
+<li>纹理坐标的使用方式：
+<ul>
+<li>在着色器中，对于普通二维贴图，通常使用 2D 纹理坐标进行采样，例如 <code>texture(sampler, vec2(s, t))</code>。</li>
+<li>在立方体贴图中，通常使用 3D 纹理坐标进行采样，例如 <code>texture(sampler, vec3(x, y, z))</code>。采样时，要注意选择正确的面，通常需要将纹理坐标标准化，并指定采样方向。</li>
+</ul>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="环境映射技术"><a class="markdownIt-Anchor" href="#环境映射技术"></a> 环境映射技术</h2>
+<h3 id="概念介绍"><a class="markdownIt-Anchor" href="#概念介绍"></a> <strong>概念介绍</strong></h3>
+<p>环境映射主要是通过将周围环境的图像映射到物体表面，来模拟环境对该物体表面的视觉影响。这种映射通常是通过预先渲染的环境纹理来实现的，该纹理可以是球形的（如球形映射），也可以是立方体的（如Cubemap）。环境映射并不是真正的动态反射，而是一种近似方法，用于在不需要精确计算每个反射光线的情况下模拟反射效果。</p>
+<h3 id="反射reflection"><a class="markdownIt-Anchor" href="#反射reflection"></a> 反射（Reflection）</h3>
+<ul>
+<li><strong>定义</strong>：反射映射模拟光滑表面（如镜面、金属）如何反射周围环境。</li>
+<li><strong>实现方式</strong>：这通常通过计算物体表面上的点相对于观察者的视线方向的反射向量，然后根据这个反射向量在环境映射中采样颜色来实现。</li>
+<li><strong>应用</strong>：反射映射广泛应用于创建高光泽度和镜面效果的材质。</li>
+</ul>
+<h3 id="折射refraction"><a class="markdownIt-Anchor" href="#折射refraction"></a> 折射（Refraction）</h3>
+<ul>
+<li><strong>定义</strong>：折射映射模拟光线穿过透明或半透明物体时的弯曲效果（如水面、玻璃）。</li>
+<li><strong>实现方式</strong>：折射映射通过计算入射光线基于物体表面法线和折射率的弯曲程度，然后根据这个弯曲的方向在环境映射中采样颜色。</li>
+<li><strong>应用</strong>：折射映射用于创建透明或半透明材料的视觉效果，如水、玻璃或宝石。</li>
+</ul>
+</div><div class="article-licensing box"><div class="licensing-title"><p>LearnOpenGL12-CubeMaps</p><p><a href="http://example.com/2023/11/23/2023-11-23-LearnOpenGL12-CubeMaps/">http://example.com/2023/11/23/2023-11-23-LearnOpenGL12-CubeMaps/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>码媛飞飞</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-11-23</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2023-11-23</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/openGL/">openGL</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/11/20/2023-11-20-LearnOpenGL11-ConvolutionKernels/"><span class="level-item">LearnOpenGL11-ConvolutionKernels</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar.png" alt="码媛飞飞"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">码媛飞飞</p><p class="is-size-6 is-block">游戏前端开发</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China,GuangZhou</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">30</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">6</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">6</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/luomuxie" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/luomuxie"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Dribbble" href="https://dribbble.com"><i class="fab fa-dribbble"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#skybox的基本原理"><span class="level-left"><span class="level-item">1</span><span class="level-item"> Skybox的基本原理</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#定义和用途"><span class="level-left"><span class="level-item">1.1</span><span class="level-item"> 定义和用途：</span></span></a></li><li><a class="level is-mobile" href="#实现技术"><span class="level-left"><span class="level-item">1.2</span><span class="level-item"> 实现技术：</span></span></a></li></ul></li><li><a class="level is-mobile" href="#环境映射技术"><span class="level-left"><span class="level-item">2</span><span class="level-item"> 环境映射技术</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#概念介绍"><span class="level-left"><span class="level-item">2.1</span><span class="level-item"> 概念介绍</span></span></a></li><li><a class="level is-mobile" href="#反射reflection"><span class="level-left"><span class="level-item">2.2</span><span class="level-item"> 反射（Reflection）</span></span></a></li><li><a class="level is-mobile" href="#折射refraction"><span class="level-left"><span class="level-item">2.3</span><span class="level-item"> 折射（Refraction）</span></span></a></li></ul></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/OpenGL/"><span class="level-start"><span class="level-item">OpenGL</span></span><span class="level-end"><span class="level-item tag">13</span></span></a></li><li><a class="level is-mobile" href="/categories/match/"><span class="level-start"><span class="level-item">match</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/shader/"><span class="level-start"><span class="level-item">shader</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/categories/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/"><span class="level-start"><span class="level-item">书籍阅读</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile" href="/categories/%E7%94%9F%E6%B4%BB%E5%BE%AE%E5%85%89/"><span class="level-start"><span class="level-item">生活微光</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile" href="/categories/%E8%8B%B1%E6%96%87/"><span class="level-start"><span class="level-item">英文</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/English/"><span class="tag">English</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/match/"><span class="tag">match</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/openGL/"><span class="tag">openGL</span><span class="tag">12</span></a></div><div class="control"><a class="tags has-addons" href="/tags/shader/"><span class="tag">shader</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/"><span class="tag">书籍阅读</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%94%9F%E6%B4%BB%E5%BE%AE%E5%85%89/"><span class="tag">生活微光</span><span class="tag">4</span></a></div></div></div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">follow.it</h3><form action="" method="post" target="_blank"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="订阅"></div></div></form></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2023 码媛飞飞</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">© 2019</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mhchem.min.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><script src="/js/custom.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
