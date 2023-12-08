@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>DynamicStarEff - Hexo</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Hexo"><meta name="msapplication-TileImage" content="/img/favicon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Hexo"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="距离函数（Distance Function）或场函数（Field Function）是一种强大的概念，它在数学和计算机图形学中广泛应用。在图形学中，它们通常用于生成复杂的形状和图案。 距离函数，在图形学中，是一个给定任意点 p（通常在二维或三维空间中），计算该点到某个形状表面的最近距离的函数。对于简单的形状，如圆或球体，这个距离很容易计算。对于复杂的形状，如心形，距离函数可能需要复杂的数学公式。"><meta property="og:type" content="blog"><meta property="og:title" content="DynamicStarEff"><meta property="og:url" content="http://example.com/2023/11/27/2023-11-27-DynamicStarEff/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="距离函数（Distance Function）或场函数（Field Function）是一种强大的概念，它在数学和计算机图形学中广泛应用。在图形学中，它们通常用于生成复杂的形状和图案。 距离函数，在图形学中，是一个给定任意点 p（通常在二维或三维空间中），计算该点到某个形状表面的最近距离的函数。对于简单的形状，如圆或球体，这个距离很容易计算。对于复杂的形状，如心形，距离函数可能需要复杂的数学公式。"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20231127113137674.png"><meta property="article:published_time" content="2023-11-26T16:00:00.000Z"><meta property="article:modified_time" content="2023-12-06T01:16:13.884Z"><meta property="article:author" content="码媛飞飞"><meta property="article:tag" content="openGL"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20231127113137674.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2023/11/27/2023-11-27-DynamicStarEff/"},"headline":"DynamicStarEff","image":["https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20231127113137674.png"],"datePublished":"2023-11-26T16:00:00.000Z","dateModified":"2023-12-06T01:16:13.884Z","author":{"@type":"Person","name":"码媛飞飞"},"publisher":{"@type":"Organization","name":"Hexo","logo":{"@type":"ImageObject","url":"http://example.com/img/logo.svg"}},"description":"距离函数（Distance Function）或场函数（Field Function）是一种强大的概念，它在数学和计算机图形学中广泛应用。在图形学中，它们通常用于生成复杂的形状和图案。 距离函数，在图形学中，是一个给定任意点 p（通常在二维或三维空间中），计算该点到某个形状表面的最近距离的函数。对于简单的形状，如圆或球体，这个距离很容易计算。对于复杂的形状，如心形，距离函数可能需要复杂的数学公式。"}</script><link rel="canonical" href="http://example.com/2023/11/27/2023-11-27-DynamicStarEff/"><link rel="icon" href="/img/favicon.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="My GitHub" href="https://github.com/luomuxie"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2023-11-26T16:00:00.000Z" title="11/27/2023, 12:00:00 AM">2023-11-27</time>发表</span><span class="level-item"><time dateTime="2023-12-06T01:16:13.884Z" title="12/6/2023, 9:16:13 AM">2023-12-06</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/OpenGL/">OpenGL</a></span><span class="level-item">14 分钟读完 (大约2152个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">DynamicStarEff</h1><div class="content"><p>距离函数（Distance Function）或场函数（Field Function）是一种强大的概念，它在数学和计算机图形学中广泛应用。在图形学中，它们通常用于生成复杂的形状和图案。</p>
+<p><strong>距离函数</strong>，在图形学中，是一个给定任意点 <em>p</em>（通常在二维或三维空间中），计算该点到某个形状表面的最近距离的函数。对于简单的形状，如圆或球体，这个距离很容易计算。对于复杂的形状，如心形，距离函数可能需要复杂的数学公式。</p>
+<ul>
+<li>如果 <em>p</em> 在心形内部，距离函数返回一个负值。</li>
+<li>如果 <em>p</em> 正好在心形边缘上，距离函数返回零。</li>
+<li>如果 <em>p</em> 在心形外部，距离函数返回一个正值</li>
+</ul>
+<h3 id="规范化坐标"><a class="markdownIt-Anchor" href="#规范化坐标"></a> 规范化坐标</h3>
+<p>解释如何将 <code>fragCoord</code> 转换为规范化的设备坐标（NDC），并根据屏幕比例调整 x 坐标。</p>
+<p>将像素坐标转换为规范化设备坐标（NDC）是一个常见的操作。NDC是一个标准化的坐标系统，其中每个轴的值范围从-1到1，原点位于屏幕中心。这种转换允许着色器以独立于屏幕分辨率的方式操作，使得绘图和效果可以在不同大小的屏幕上保持一致。</p>
+<p>以下是将 <code>fragCoord</code> 转换为 NDC 的步骤：</p>
+<ol>
+<li>
+<p><strong>归一化坐标</strong>:</p>
+<ul>
+<li>首先，我们将 <code>fragCoord</code> 的 x 和 y 值除以屏幕的宽度和高度（<code>iResolution.xy</code>），这会将坐标范围从 <code>[0, width]</code> 和 <code>[0, height]</code> 转换为 <code>[0, 1]</code>。</li>
+</ul>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">vec2</span> q = fragCoord / iResolution.xy;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>转换到 NDC</strong>:</p>
+<ul>
+<li>接着，我们将归一化的坐标乘以2然后减去1，将坐标范围从 <code>[0, 1]</code> 转换为 <code>[-1, 1]</code>，这样原点就位于屏幕中心了。</li>
+</ul>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">vec2</span> p = <span class="number">-1.0</span> + <span class="number">2.0</span> * q;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>调整宽高比</strong>:</p>
+<ul>
+<li>由于不同的屏幕可能有不同的宽高比，直接使用上述转换可能会导致图形被拉伸。为了解决这个问题，我们需要根据屏幕宽高比调整 x 坐标。我们通过屏幕的宽度除以高度（<code>iResolution.x / iResolution.y</code>），来缩放 x 坐标，以保持图形的宽高比正确。</li>
+</ul>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p.x *= iResolution.x / iResolution.y;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这样，经过转换的坐标 <code>p</code> 将是规范化的，可以用于在屏幕上以比例正确的方式绘制图形。任何在这个坐标系下定义的图形都会自动适应不同尺寸和宽高比的屏幕</p>
+<h3 id="动态位置调整"><a class="markdownIt-Anchor" href="#动态位置调整"></a> 动态位置调整</h3>
+<p>详细介绍循环如何在不同的时间间隔为每个心形创建动态的位置变化。</p>
+<p>以下是如何在循环中为每个心形创建动态位置变化的详细介绍：</p>
+<ol>
+<li>
+<p><strong>时间偏移</strong>:</p>
+<ul>
+<li><code>itime</code> 是基于全局时间 <code>iTime</code> 的变量，它为每个心形添加一个不同的时间偏移量。这样，每个心形都有其独特的动态行为，使得动画看起来更加自然和有趣。</li>
+</ul>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> itime = iTime + <span class="number">1.2</span> * <span class="type">float</span>(i);</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>水平位置变化</strong>:</p>
+<ul>
+<li><code>p0.x += sin(itime);</code> 这一行代码使用正弦函数来调整心形的水平位置，正弦函数随着时间的变化而变化，创建了左右摇摆的效果。</li>
+</ul>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p0.x += <span class="built_in">sin</span>(itime);</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>垂直位置变化</strong>:</p>
+<ul>
+<li>垂直位置的变化更为复杂。首先，使用 <code>fract(itime)</code> 获取时间的小数部分，然后通过减去0.5、平方、乘以2等操作，创建了一个有趣的非线性运动轨迹。</li>
+</ul>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">b = <span class="built_in">fract</span>(b);</span><br><span class="line">b -= <span class="number">0.5</span>;</span><br><span class="line">b *= b;</span><br><span class="line">b *= <span class="number">2.0</span>;</span><br><span class="line">p0.y += b;</span><br></pre></td></tr></table></figure>
+<p><img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20231127113137674.png" alt="image-20231127113137674" /></p>
+</li>
+<li>
+<p><strong>旋转变换</strong>:</p>
+<ul>
+<li><code>p0 *= rot(8.0 * cos(itime));</code> 这行代码对心形应用了一个时间变化的旋转矩阵，<code>rot</code> 是一个函数，返回一个根据时间变化的旋转矩阵。这样，心形不仅在位置上动态变化，而且在角度上也进行旋转，增加了效果的多样性。</li>
+</ul>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">p0 *= rot(<span class="number">8.0</span> * <span class="built_in">cos</span>(itime));</span><br></pre></td></tr></table></figure>
+<p><code>rot</code> 函数通常用于创建一个二维旋转矩阵，它可以用来旋转一个点或对象在二维空间内的位置。这个函数通常接受一个角度作为参数，返回一个可以用来旋转向量的 2x2 矩阵。</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">mat2</span> rot(<span class="type">float</span> angle) &#123;</span><br><span class="line">    <span class="type">float</span> s = <span class="built_in">sin</span>(angle);</span><br><span class="line">    <span class="type">float</span> c = <span class="built_in">cos</span>(angle);</span><br><span class="line">    <span class="keyword">return</span> <span class="type">mat2</span>(c, -s, s, c);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个矩阵是通过将角度的正弦和余弦值排列成一个 2x2 矩阵得到的。在二维空间中，旋转矩阵可以表示为：</p>
+<p class='katex-block katex-error' title='ParseError: KaTeX parse error: No such environment: equation at position 7: \begin{̲e̲q̲u̲a̲t̲i̲o̲n̲}̲
+\begin{bmatrix…'>\begin{equation}
+\begin{bmatrix}
+\cos(\theta) &amp; -\sin(\theta) \\
+\sin(\theta) &amp; \cos(\theta)
+\end{bmatrix}
+\end{equation}
+</p>
+</li>
+<li>
+<p><strong>心形距离和绘制</strong>:</p>
+<ul>
+<li>在调整了位置和旋转之后，使用 <code>star5</code> 函数（其实应为心形的距离函数）来确定当前片段是否在心形内部。如果在内部，则计算并应用颜色。</li>
+</ul>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> d = star5(p0, <span class="number">0.5</span>, <span class="number">0.5</span>);</span><br><span class="line"><span class="keyword">if</span> (d &lt; <span class="number">0.0</span>) &#123;</span><br><span class="line">    col = palette(itime - <span class="number">8.0</span> * d);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="颜色的动态分配"><a class="markdownIt-Anchor" href="#颜色的动态分配"></a> 颜色的动态分配</h3>
+<p>分析 <code>palette</code> 函数如何根据时间变化分配颜色，以及如何使用距离值 <code>d</code> 来调整颜色。</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">vec3</span> palette(<span class="type">float</span> a) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0.5</span> + <span class="number">0.5</span> * <span class="built_in">sin</span>(<span class="type">vec3</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>) + a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>正弦函数的应用</strong>:
+<ul>
+<li><code>sin(vec3(0, 1, 2) + a)</code>：这里，<code>sin</code> 函数应用于一个三维向量 <code>vec3(0, 1, 2)</code>，然后再加上输入参数 <code>a</code>。向量中的每个分量（0, 1, 2）分别被加到 <code>a</code> 上，这意味着每个颜色通道（红、绿、蓝）的正弦波都有不同的相位偏移。</li>
+</ul>
+</li>
+<li><strong>颜色通道的相位偏移</strong>:
+<ul>
+<li>由于红、绿、蓝通道的相位偏移分别为 0、1、2，这会导致每个颜色通道的正弦波形相位错开。这种相位偏移确保了每个颜色通道随时间变化的模式不同，从而创造出丰富多彩的动态颜色效果。</li>
+</ul>
+</li>
+<li><strong>颜色值的范围调整</strong>:
+<ul>
+<li>正弦函数 <code>sin</code> 的输出范围是 [-1, 1]。为了将这个范围调整到 [0, 1]（颜色值的标准范围），函数对正弦波的结果先加上 0.5，再乘以 0.5。这样，最终的颜色值将在 0 到 1 之间变化</li>
+</ul>
+</li>
+</ol>
+<h3 id="边缘平滑"><a class="markdownIt-Anchor" href="#边缘平滑"></a> 边缘平滑</h3>
+<p>计算 <code>od</code>（外部距离）来平滑心形的边缘，并赋予它们不同的颜色。这种方法通常用于在光栅化图形中实现抗锯齿效果，使得边缘看起来更加平滑。</p>
+<p><strong>距离值的调整</strong>:</p>
+<ul>
+<li>在代码中，<code>od</code> 是根据心形的距离函数 <code>d</code> 计算得到的，这个距离函数返回每个像素点到心形边缘的最短距离。</li>
+<li><code>od</code> 是这个距离的绝对值减去一个小的常数（如 0.015），这样做的目的是创建一个边缘区域，其中 <code>od</code> 为负值表示接近心形的边缘。</li>
+</ul>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> od = <span class="built_in">abs</span>(d) - <span class="number">0.015</span>;</span><br></pre></td></tr></table></figure>
+<p><strong>边缘检测</strong>:</p>
+<ul>
+<li>当 <code>od</code> 小于 0 时，表示当前像素位于心形边缘的附近。在这个区域内，可以应用特殊的颜色或效果来平滑边缘。</li>
+</ul>
+<p><strong>颜色应用</strong>:</p>
+<ul>
+<li>在边缘区域（<code>od &lt; 0</code>），可以选择一个与心形内部或背景不同的颜色，或者使用某种颜色混合技术，如线性插值（lerp）。</li>
+<li>这种颜色处理有助于减少锯齿现象，使边缘看起来更平滑。</li>
+</ul>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (od &lt; <span class="number">0.0</span>) &#123;</span><br><span class="line">    col = <span class="type">vec3</span>(q.y); <span class="comment">// 示例：使用与垂直位置相关的颜色</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种技术在图形渲染中非常常见，尤其是在低分辨率或需要高质量渲染效果的情况下。</p>
+<h3 id="颜色校正与输出"><a class="markdownIt-Anchor" href="#颜色校正与输出"></a> 颜色校正与输出</h3>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">col = <span class="built_in">sqrt</span>(col);</span><br></pre></td></tr></table></figure>
+<p>对颜色进行平方根处理，即进行伽马校正（Gamma Correction），是一种重要的颜色管理技术。它用于调整图像的亮度表示，使其更接近人眼对亮度的非线性感知。这种校正有助于在不同的显示设备上保持颜色的一致性和准确性。</p>
+<h3 id="效果"><a class="markdownIt-Anchor" href="#效果"></a> 效果</h3>
+<ul>
+<li>通过伽马校正，可以使图像的亮度分布更贴近人眼的感知，从而提高视觉质量。</li>
+<li>它特别对提升暗区域的细节和色彩渐变的平滑性有效，减少了色带（Banding）现象。</li>
+</ul>
+</div><div class="article-licensing box"><div class="licensing-title"><p>DynamicStarEff</p><p><a href="http://example.com/2023/11/27/2023-11-27-DynamicStarEff/">http://example.com/2023/11/27/2023-11-27-DynamicStarEff/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>码媛飞飞</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2023-11-27</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2023-12-06</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/openGL/">openGL</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2023/12/06/2023-12-06-TODO/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">TODO</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2023/11/23/2023-11-23-LearnOpenGL12-CubeMaps/"><span class="level-item">LearnOpenGL12-CubeMaps</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar.png" alt="码媛飞飞"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">码媛飞飞</p><p class="is-size-6 is-block">游戏前端开发</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China,GuangZhou</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">32</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">6</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">6</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/luomuxie" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/luomuxie"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Dribbble" href="https://dribbble.com"><i class="fab fa-dribbble"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#规范化坐标"><span class="level-left"><span class="level-item">1</span><span class="level-item"> 规范化坐标</span></span></a></li><li><a class="level is-mobile" href="#动态位置调整"><span class="level-left"><span class="level-item">2</span><span class="level-item"> 动态位置调整</span></span></a></li><li><a class="level is-mobile" href="#颜色的动态分配"><span class="level-left"><span class="level-item">3</span><span class="level-item"> 颜色的动态分配</span></span></a></li><li><a class="level is-mobile" href="#边缘平滑"><span class="level-left"><span class="level-item">4</span><span class="level-item"> 边缘平滑</span></span></a></li><li><a class="level is-mobile" href="#颜色校正与输出"><span class="level-left"><span class="level-item">5</span><span class="level-item"> 颜色校正与输出</span></span></a></li><li><a class="level is-mobile" href="#效果"><span class="level-left"><span class="level-item">6</span><span class="level-item"> 效果</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/OpenGL/"><span class="level-start"><span class="level-item">OpenGL</span></span><span class="level-end"><span class="level-item tag">14</span></span></a></li><li><a class="level is-mobile" href="/categories/match/"><span class="level-start"><span class="level-item">match</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/shader/"><span class="level-start"><span class="level-item">shader</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/categories/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/"><span class="level-start"><span class="level-item">书籍阅读</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile" href="/categories/%E7%94%9F%E6%B4%BB%E5%BE%AE%E5%85%89/"><span class="level-start"><span class="level-item">生活微光</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/categories/%E8%8B%B1%E6%96%87/"><span class="level-start"><span class="level-item">英文</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/English/"><span class="tag">English</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/match/"><span class="tag">match</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/openGL/"><span class="tag">openGL</span><span class="tag">13</span></a></div><div class="control"><a class="tags has-addons" href="/tags/shader/"><span class="tag">shader</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/"><span class="tag">书籍阅读</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%94%9F%E6%B4%BB%E5%BE%AE%E5%85%89/"><span class="tag">生活微光</span><span class="tag">5</span></a></div></div></div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">follow.it</h3><form action="" method="post" target="_blank"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="订阅"></div></div></form></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2023 码媛飞飞</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">© 2019</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mhchem.min.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><script src="/js/custom.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
