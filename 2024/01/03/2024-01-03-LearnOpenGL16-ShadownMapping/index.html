@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>LearnOpenGL16-ShadownMapping - Hexo</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Hexo"><meta name="msapplication-TileImage" content="/img/favicon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Hexo"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="引言  阴影的重要性 阴影在3D图形中扮演着至关重要的角色，因为它们增加了场景的深度和立体感，同时为用户提供了关于物体空间关系和位置的线索。没有阴影的3D场景通常看起来会非常平面和不真实。阴影可以帮助改善物体的识别率，增强视觉效果，并且为虚拟世界带来更多的真实感和沉浸感。     shadow mapping 的基本概念 阴影映射是一种在计算机图形中生成阴影的技术。这种技术的基本思想是从光源的视"><meta property="og:type" content="blog"><meta property="og:title" content="LearnOpenGL16-ShadownMapping"><meta property="og:url" content="http://example.com/2024/01/03/2024-01-03-LearnOpenGL16-ShadownMapping/"><meta property="og:site_name" content="Hexo"><meta property="og:description" content="引言  阴影的重要性 阴影在3D图形中扮演着至关重要的角色，因为它们增加了场景的深度和立体感，同时为用户提供了关于物体空间关系和位置的线索。没有阴影的3D场景通常看起来会非常平面和不真实。阴影可以帮助改善物体的识别率，增强视觉效果，并且为虚拟世界带来更多的真实感和沉浸感。     shadow mapping 的基本概念 阴影映射是一种在计算机图形中生成阴影的技术。这种技术的基本思想是从光源的视"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240110091043508.png"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240111091000821.png"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240111091052977.png"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240111091000821.png"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240105084028599.png"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240105155443007.png"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240105155617345.png"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240107112213982.png"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240112090032796.png"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240112211525046.png"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240112220739775.png"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240112221937816.png"><meta property="og:image" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240112223259981.png"><meta property="article:published_time" content="2024-01-02T16:00:00.000Z"><meta property="article:modified_time" content="2024-01-14T06:34:49.491Z"><meta property="article:author" content="码媛飞飞"><meta property="article:tag" content="openGL"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240110091043508.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://example.com/2024/01/03/2024-01-03-LearnOpenGL16-ShadownMapping/"},"headline":"LearnOpenGL16-ShadownMapping","image":["https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240110091043508.png","https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240111091000821.png","https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240111091052977.png","https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240111091000821.png","https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240105084028599.png","https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240105155443007.png","https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240105155617345.png","https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240107112213982.png","https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240112090032796.png","https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240112211525046.png","https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240112220739775.png","https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240112221937816.png","https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240112223259981.png"],"datePublished":"2024-01-02T16:00:00.000Z","dateModified":"2024-01-14T06:34:49.491Z","author":{"@type":"Person","name":"码媛飞飞"},"publisher":{"@type":"Organization","name":"Hexo","logo":{"@type":"ImageObject","url":"http://example.com/img/logo.svg"}},"description":"引言  阴影的重要性 阴影在3D图形中扮演着至关重要的角色，因为它们增加了场景的深度和立体感，同时为用户提供了关于物体空间关系和位置的线索。没有阴影的3D场景通常看起来会非常平面和不真实。阴影可以帮助改善物体的识别率，增强视觉效果，并且为虚拟世界带来更多的真实感和沉浸感。     shadow mapping 的基本概念 阴影映射是一种在计算机图形中生成阴影的技术。这种技术的基本思想是从光源的视"}</script><link rel="canonical" href="http://example.com/2024/01/03/2024-01-03-LearnOpenGL16-ShadownMapping/"><link rel="icon" href="/img/favicon.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="My GitHub" href="https://github.com/luomuxie"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="目录" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2024-01-02T16:00:00.000Z" title="1/3/2024, 12:00:00 AM">2024-01-03</time>发表</span><span class="level-item"><time dateTime="2024-01-14T06:34:49.491Z" title="1/14/2024, 2:34:49 PM">2024-01-14</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/OpenGL/">OpenGL</a></span><span class="level-item">33 分钟读完 (大约4899个字)</span></div></div><h1 class="title is-3 is-size-4-mobile">LearnOpenGL16-ShadownMapping</h1><div class="content"><h3 id="引言"><a class="markdownIt-Anchor" href="#引言"></a> <strong>引言</strong></h3>
+<h4 id="阴影的重要性"><a class="markdownIt-Anchor" href="#阴影的重要性"></a> 阴影的重要性</h4>
+<p>阴影在3D图形中扮演着至关重要的角色，因为它们增加了场景的深度和立体感，同时为用户提供了关于物体空间关系和位置的线索。没有阴影的3D场景通常看起来会非常平面和不真实。阴影可以帮助改善物体的识别率，增强视觉效果，并且为虚拟世界带来更多的真实感和沉浸感。</p>
+<ul>
+<li><img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240110091043508.png" alt="image-20240110091043508" /></li>
+</ul>
+<h4 id="shadow-mapping-的基本概念"><a class="markdownIt-Anchor" href="#shadow-mapping-的基本概念"></a> shadow mapping 的基本概念</h4>
+<p>阴影映射是一种在计算机图形中生成阴影的技术。这种技术的基本思想是从光源的视角渲染场景，从而创建一个深度图，这个深度图包含了从光源视角看到的最近表面的深度信息。然后，在正常渲染过程中，场景中的每个点都会被转换到光源的视角，以确定它是否被阻挡在光源后面。</p>
+<p><img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240111091000821.png" alt="image-20240111091000821" /></p>
+<p>如上图，左侧的图片展示了一个定向光源（所有光线都是平行的）在立方体下的表面投射的阴影。通过储存到（右边）深度贴图中的深度值，我们就能找到最近点，用以决定片段是否在阴影中。</p>
+<p>转换成2D平面则如下图：</p>
+<p><img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240111091052977.png" alt="image-20240111091052977" /></p>
+<h3 id="基本原理"><a class="markdownIt-Anchor" href="#基本原理"></a> <strong>基本原理</strong></h3>
+<h4 id="光源视角-light-space"><a class="markdownIt-Anchor" href="#光源视角-light-space"></a> 光源视角 (Light Space )</h4>
+<p>光源视角是指从光源的位置出发，按照光的方向查看场景的视角。在这个视角下，光源可以被看作是一个“观察者”，它可以“看到”所有直接被照亮的表面。这种视角对于确定哪些部分会被光照到，哪些部分会形成阴影至关重要。</p>
+<h4 id="深度图-depth-map"><a class="markdownIt-Anchor" href="#深度图-depth-map"></a> 深度图 (Depth Map)</h4>
+<p>深度图，也称为阴影图，是一个纹理，记录了从光源视角看到的每个像素点的深度信息。它是通过渲染场景的深度信息到一个离屏缓冲区（off-screen buffer）来创建的，并且只存储深度值，不存储颜色信息。</p>
+<p><img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240111091000821.png" alt="image-20240111091000821" /></p>
+<h4 id="如何从光源视角渲染深度图"><a class="markdownIt-Anchor" href="#如何从光源视角渲染深度图"></a> 如何从光源视角渲染深度图</h4>
+<ul>
+<li><strong>第1步：设置光源的视图和投影矩阵</strong>,</li>
+</ul>
+<p>首先，你需要定义光源的位置和方向。根据这些信息，你可以创建一个视图矩阵，它能够将场景中的坐标从世界空间变换到光源空间。这个过程与设置相机的视图矩阵非常相似。接着，你需要设置一个投影矩阵，这取决于你的光源类型（点光源、定向光源或聚光灯）。对于定向光源，你通常会使用一个正交投影矩阵；对于点光源或聚光灯，你会使用一个透视投影矩阵。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lightProjection = glm::<span class="built_in">ortho</span>(<span class="number">-10.0f</span>, <span class="number">10.0f</span>, <span class="number">-10.0f</span>, <span class="number">10.0f</span>, near_plane, far_plane);</span><br><span class="line"></span><br><span class="line">lightView = glm::<span class="built_in">lookAt</span>(lightPos, glm::<span class="built_in">vec3</span>(<span class="number">0.0f</span>), glm::<span class="built_in">vec3</span>(<span class="number">0.0</span>, <span class="number">1.0</span>, <span class="number">0.0</span>));</span><br><span class="line"></span><br><span class="line">lightSpaceMatrix = lightProjection * lightView;      </span><br></pre></td></tr></table></figure>
+<ul>
+<li>
+<p><strong>第2步：创建并设置深度缓冲区</strong>:在OpenGL中，你需要创建一个帧缓冲区对象（FBO），并附加一个深度纹理。这个深度纹理将作为深度缓冲区，用来存储深度信息。</p>
+</li>
+<li>
+<p><strong>第3步：渲染场景到深度缓冲区</strong>:</p>
+<ul>
+<li>
+<p><strong>清除深度缓冲区</strong>：在每次渲染之前，清除深度缓冲区，通常设置深度值为最远。</p>
+</li>
+<li>
+<p><strong>使用光源的视图和投影矩阵</strong>：为渲染设置适当的矩阵，这样所有顶点都会从光源的视角被变换。</p>
+</li>
+<li>
+<p><strong>只写入深度信息</strong>：渲染场景时，你只关心深度信息，不需要颜色信息。</p>
+</li>
+<li>
+<p><strong>遍历场景中的物体</strong>：对每个物体，应用视图和投影矩阵变换，并渲染它们的深度信息到深度纹理中。</p>
+</li>
+</ul>
+</li>
+<li>
+<h3 id="第4步使用深度图进行阴影判断"><a class="markdownIt-Anchor" href="#第4步使用深度图进行阴影判断"></a> 第4步：使用深度图进行阴影判断</h3>
+<p>一旦深度图被渲染，它就可以被用来在实际的场景渲染中判断片元是否处于阴影之中。这个过程涉及将片元的世界空间坐标变换到光源空间，并与深度图中存储的值进行比较</p>
+</li>
+</ul>
+<h3 id="阴影映射的挑战"><a class="markdownIt-Anchor" href="#阴影映射的挑战"></a> <strong>阴影映射的挑战</strong></h3>
+<h4 id="深度冲突shadow-acne"><a class="markdownIt-Anchor" href="#深度冲突shadow-acne"></a> <strong>深度冲突（Shadow Acne）</strong></h4>
+<p>使用平行光源（如太阳）时。这种情况下，由于深度贴图的分辨率限制以及视角的问题，多个不同的片段（fragment）可能会从深度贴图的同一像素进行深度值的采样。当光源以一定角度照射表面时，这个问题尤为明显。</p>
+<img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240105084028599.png" alt="image-20240105084028599" style="zoom:67%;" />
+<p>就像下图中，多个不同的片段（fragment）可能会从深度贴图的同一像素进行深度值的采样，a,b,c d 三个点，共同从中心的红点采样，c ,d 深度明显大于红点深度，a，b的深度小于红点深度</p>
+<p><img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240105155443007.png" alt="image-20240105155443007" /></p>
+<h5 id="阴影偏移shadow-bias"><a class="markdownIt-Anchor" href="#阴影偏移shadow-bias"></a> <strong>阴影偏移</strong>（shadow bias）</h5>
+<p>对深度图中存储的深度值添加一个<strong>小的偏差值</strong>。这个偏差通常是一个非常小的正数，目的是轻微地提高深度图中的深度值。这样，当我们从相机的视角查看场景并进行深度比较时，由于深度图中的值略微增加，那些本应照亮的片元不太可能会被错误地判断为在阴影中，因为它们现在与深度图中存储的略微偏差的值相比较了。</p>
+<p><img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240105155617345.png" alt="image-20240105155617345" /></p>
+<p>但是有些表面坡度很大，仍然会产生阴影失真，如下图：</p>
+<img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240107112213982.png" style="zoom: 33%;" />
+<p>在表面坡度较大的情况下，即表面与光线方向接近平行，即使相邻的片元之间的实际距离很小，由于深度的变化与视线方向的变化不成正比，它们在深度图中的深度值的变化却可能很大。</p>
+<p>这意味着即使实际的几何表面没有变化，深度值的微小差异也可能导致深度冲突，特别是在表面与光线方向几乎平行的情况下。</p>
+<p><img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240112090032796.png" alt="image-20240112090032796" /></p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">float</span> bias = <span class="built_in">max</span>(<span class="number">0.05</span> * (<span class="number">1.0</span> - <span class="built_in">dot</span>(normal, lightDir)), <span class="number">0.005</span>);</span><br></pre></td></tr></table></figure>
+<h5 id="延伸一下dot"><a class="markdownIt-Anchor" href="#延伸一下dot"></a> 延伸一下dot：</h5>
+<p>这个计算和diffuse的计算有相似这处</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">diffuse = lightColor * (dot(normal, lightDir) * diffuseIntensity)</span><br></pre></td></tr></table></figure>
+<p>在漫反射光照模型中，光的强度取决于光线与表面法线的夹角。光线与表面法线越垂直，表面接收的光就越多，因此反射光越亮。在阴影映射中，斜率比例偏差使用点积来动态调整深度偏差量。如果表面与光源几乎平行（表面法线与光线方向的点积接近于0），我们需要一个更大的偏差量来预防深度冲突。</p>
+<p>与计算specular的的相似处：</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// H为半角向量，即光源方向与观察方向的中间向量</span></span><br><span class="line"><span class="comment">// N为法线，L为光线方向，V为观察者向量</span></span><br><span class="line"><span class="type">vec3</span> H = <span class="built_in">normalize</span>(L + V);</span><br><span class="line"><span class="type">float</span> spec = <span class="built_in">pow</span>(<span class="built_in">max</span>(<span class="built_in">dot</span>(N, H), <span class="number">0.0</span>), n);</span><br><span class="line"><span class="type">vec3</span> specular = spec * lightColor;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这样是不是可以理解当光与物体表面的交互时，都是这们操作差不多呢？</p>
+<p>在光与物体表面交互的许多情况中，都会涉及到光线方向与物体表面法线之间的关系。这种关系通常通过点积（dot product）来量化，因为它能够有效地衡量两个向量之间的角度。点积在光照计算中的应用反映了以下基本的物理和几何原理。它可以帮助确定光线如何与物体的几何表面相互作用，从而实现不同的视觉效果。</p>
+<h5 id="添加分辨率增多采样"><a class="markdownIt-Anchor" href="#添加分辨率增多采样"></a> 添加分辨率增多采样</h5>
+<p>提高阴影映射中的深度图（或阴影贴图）分辨率是减轻或消除阴影痤疮（Shadow Acne）的一种方法。阴影痤疮是由于深度贴图的分辨率不足以及深度缓冲的有限精度所引起的，表现为渲染的阴影表面上出现的不希望的条纹状或斑点状伪影。</p>
+<p>提高分辨率意味着在阴影贴图中每个阴影像素可以覆盖更小的区域，这可以减少不正确阴影的出现，提供更精细的阴影边缘和细节。</p>
+<p><strong>限制</strong>：</p>
+<ol>
+<li><strong>性能开销</strong>：提高阴影贴图的分辨率会增加内存的使用和渲染计算的负担。在实时渲染的应用中，如视频游戏，这可能会影响帧率和总体性能。</li>
+<li><strong>可能的过滤问题</strong>：即使提高了分辨率，阴影边缘可能仍然出现锯齿状或过于硬边的问题，这可能需要通过软阴影技术如百分比较近过滤（PCF）来进一步处理。</li>
+<li><strong>存储和带宽限制</strong>：更高分辨率的阴影贴图需要更多的内存存储空间，同时也增加了GPU带宽的需求。</li>
+</ol>
+<h4 id="悬浮阴影peter-panning"><a class="markdownIt-Anchor" href="#悬浮阴影peter-panning"></a> 悬浮阴影（Peter Panning）</h4>
+<p>阴影偏移是为了解决深度冲突（Shadow Acne）问题而添加的。深度冲突是由于深度缓冲区的有限精度导致的，在渲染时可能会产生阴影表面上的斑点状伪影。为了避免这种情况，通常会向深度值添加一个小的偏移量，从而确保深度测试不会因为微小的误差而失败。</p>
+<p>然而，如果偏移量设置得过大，就会产生Peter Panning效应，因为实际的阴影会从物体表面偏移开来，看起来像是悬浮在空中的。正确的偏移量通常是一个需要精心调整的值，它需要足够大以避免深度冲突，但又不能太大以至于产生不真实的阴影间隙。</p>
+<img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240112211525046.png" alt="image-20240112211525046" style="zoom: 33%;" />
+<p>分辨率限制和阴影锯齿现象</p>
+<h3 id="百分比较近过滤pcf"><a class="markdownIt-Anchor" href="#百分比较近过滤pcf"></a> 百分比较近过滤（PCF）</h3>
+<h4 id="基础pcf"><a class="markdownIt-Anchor" href="#基础pcf"></a> <strong>基础PCF</strong>：</h4>
+<p>最简单的PCF实现。它在深度贴图上对一个小的区域（例如3x3或5x5像素网格）进行采样，并对这些样本进行平均，来决定最终像素是否在阴影中。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//3x3 kernel PCF---------------------------------------------------------</span></span><br><span class="line">vec2 texelSize = <span class="number">1.0</span> / <span class="built_in">textureSize</span>(depthMap, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> x = <span class="number">-1</span>; x &lt;= <span class="number">1</span>; ++x)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> y = <span class="number">-1</span>; y &lt;= <span class="number">1</span>; ++y)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">float</span> pcfDepth = <span class="built_in">texture</span>(depthMap, projCoords.xy + <span class="built_in">vec2</span>(x, y) * texelSize*<span class="number">4</span>).r; </span><br><span class="line">        shadow += currentDepth - <span class="number">0.005</span> &gt; pcfDepth ? <span class="number">1.0</span> : <span class="number">0.0</span>;</span><br><span class="line">    &#125;    </span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> shadow /= <span class="number">9.0</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240112220739775.png" alt="image-20240112220739775" /></p>
+<h4 id="uniformdisksample-pcf"><a class="markdownIt-Anchor" href="#uniformdisksample-pcf"></a> uniformDiskSample PCF</h4>
+<p>在圆盘内随机或伪随机选择采样点，以模拟光源的面积和扩散效果</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">//uniformDiskSample PCF---------------------------------------------------------</span></span><br><span class="line">    <span class="type">int</span> samples = <span class="number">16</span>; <span class="comment">// 采样数，可调整</span></span><br><span class="line">    <span class="type">float</span> radius = <span class="number">5.0</span>; <span class="comment">// 采样半径，可调整        </span></span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; samples; ++i) &#123;</span><br><span class="line">        <span class="type">vec2</span> sampleUv = uniformDiskSample(rand(projCoords.xy), rand(projCoords.xy + <span class="number">1.0</span>));</span><br><span class="line">        <span class="comment">// 将采样点从单位圆映射到采样半径</span></span><br><span class="line">        sampleUv = sampleUv * radius / <span class="built_in">textureSize</span>(depthMap, <span class="number">0</span>).x + projCoords.xy;</span><br><span class="line">        <span class="type">float</span> sampleDepth = <span class="built_in">texture</span>(depthMap, sampleUv).r;</span><br><span class="line">        <span class="keyword">if</span>(currentDepth - bias &gt; sampleDepth)</span><br><span class="line">            shadow += <span class="number">1.0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> shadow / <span class="type">float</span>(samples);</span><br><span class="line"></span><br><span class="line"><span class="type">float</span> rand(<span class="type">vec2</span> co)&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">fract</span>(<span class="built_in">sin</span>(<span class="built_in">dot</span>(co.xy ,<span class="type">vec2</span>(<span class="number">12.9898</span>,<span class="number">78.233</span>))) * <span class="number">43758.5453</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240112221937816.png" alt="image-20240112221937816" /></p>
+<h4 id="poisson-disk-pcf"><a class="markdownIt-Anchor" href="#poisson-disk-pcf"></a> poisson disk PCF</h4>
+<p>它通过采用特定的采样策略来改善阴影质量。Poisson Disk采样是一种在给定区域内生成样本点的方法，这些样本点既是随机分布的，又保持一定的最小距离，从而避免了样本点的聚集。</p>
+<p><strong>更均匀的采样分布</strong>：相比于简单的随机或均匀采样，Poisson Disk采样在样本点之间保持最小距离，这避免了样本点的过度聚集或规则排列，从而产生更自然的阴影效果。</p>
+<figure class="highlight glsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//poisson disk PCF---------------------------------------------------------</span></span><br><span class="line"><span class="type">vec2</span> texelSize = <span class="number">1.0</span> / <span class="built_in">textureSize</span>(depthMap, <span class="number">0</span>);</span><br><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; poissonDiskSamples; ++i) &#123;</span><br><span class="line">    <span class="type">vec2</span> sampleUv = projCoords.xy + poissonDisk[i] * texelSize*<span class="number">5</span>; </span><br><span class="line">    <span class="type">float</span> sampleDepth = <span class="built_in">texture</span>(depthMap, sampleUv).r; </span><br><span class="line">    shadow += currentDepth - bias &gt; sampleDepth ? <span class="number">1.0</span> : <span class="number">0.0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> shadow / <span class="type">float</span>(poissonDiskSamples);</span><br></pre></td></tr></table></figure>
+<img src="https://luomu-1313449401.cos.ap-guangzhou.myqcloud.com/typora/image-20240112223259981.png" alt="image-20240112223259981" style="zoom: 67%;" />
+<h3 id="方差阴影映射vsmtodo"><a class="markdownIt-Anchor" href="#方差阴影映射vsmtodo"></a> 方差阴影映射（VSM）（TODO）</h3>
+<p>VSM 主要依赖于统计学中的方差概念来实现阴影的软化效果。</p>
+<ol>
+<li><strong>存储深度信息的方式</strong>：
+<ul>
+<li>传统阴影映射技术通常只存储深度信息。相比之下，VSM 存储每个像素的深度信息和深度的平方。</li>
+<li>存储额外的深度平方信息允许计算出该像素深度值的方差。</li>
+</ul>
+</li>
+<li><strong>使用方差进行阴影判断</strong>：
+<ul>
+<li>在渲染过程中，VSM 使用这些存储的值来计算阴影区域内的方差和平均深度。</li>
+<li>利用这些信息，VSM 可以估算一个像素是否处于阴影中，而不是进行简单的深度比较。</li>
+</ul>
+</li>
+<li><strong>软阴影效果</strong>：
+<ul>
+<li>方差的使用允许阴影边缘出现渐变，这样阴影边缘就不是硬边缘而是软边缘，能够生成更自然的阴影效果。</li>
+<li>这种方法特别适用于光源较大或阴影边缘需要更柔和的场景。</li>
+</ul>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li>VSM 可以生成非常平滑的阴影边缘，并且处理起来相对简单。</li>
+<li>它不像传统的PCF那样依赖于大量的采样来软化阴影边缘，因此在某些情况下可能更高效。</li>
+</ul>
+</li>
+<li><strong>挑战和限制</strong>：
+<ul>
+<li>VSM 可能会遇到光泄漏（light leaking）和阴影穿透（shadow bleeding）的问题，特别是在复杂的场景或重叠几何体的情况下。</li>
+<li>它对深度值的分布非常敏感，可能需要进行调整和优化，以避免这些问题。</li>
+</ul>
+</li>
+</ol>
+<h3 id="级联阴影映射csmtodo"><a class="markdownIt-Anchor" href="#级联阴影映射csmtodo"></a> 级联阴影映射（CSM）(TODO)</h3>
+<p>级联阴影映射（Cascade Shadow Maps，简称CSM）是一种用于实现大范围场景阴影的技术，特别是在户外环境和大型3D场景中。CSM 通过分割视图摄像机的视锥体（frustum）到多个区域（称为“级联”），为每个区域生成单独的阴影贴图，从而在不同的距离级别上提供不同的阴影细节。（LOD思想）</p>
+<p>级联阴影映射（Cascade Shadow Maps，简称CSM）是一种用于实现大范围场景阴影的技术，特别是在户外环境和大型3D场景中。CSM 通过分割视图摄像机的视锥体（frustum）到多个区域（称为“级联”），为每个区域生成单独的阴影贴图，从而在不同的距离级别上提供不同的阴影细节。</p>
+<p><strong>CSM的主要特点和工作原理</strong>：</p>
+<ol>
+<li><strong>分割视图摄像机的视锥体</strong>：
+<ul>
+<li>CSM 将摄像机的视锥体分割成多个级联，通常是2至4个。每个级联覆盖视锥体的不同部分，通常近处的级联覆盖区域更小，但使用更高分辨率的阴影贴图。</li>
+</ul>
+</li>
+<li><strong>为每个级联生成阴影贴图</strong>：
+<ul>
+<li>对于每个级联，分别从光源的视角渲染阴影贴图。这意味着每个级联都有自己的深度贴图，能够独立控制其细节水平。</li>
+</ul>
+</li>
+<li><strong>提供详细的近处阴影和合理的远处阴影</strong>：
+<ul>
+<li>由于近处的级联使用更高分辨率的阴影贴图，它们能够提供更精细的阴影细节。而远处的级联则可以使用较低分辨率的贴图，减少性能消耗。</li>
+</ul>
+</li>
+<li><strong>平滑过渡</strong>：
+<ul>
+<li>CSM 需要在不同级联之间平滑过渡，以避免可见的切换或阴影不连续的问题。</li>
+</ul>
+</li>
+<li><strong>优点</strong>：
+<ul>
+<li>CSM 可以在广阔的场景中提供高质量的阴影，同时通过只在需要的地方使用高分辨率阴影来优化性能。</li>
+<li>它特别适用于大型户外环境，其中远处的物体不需要像近处物体那样细致的阴影细节。</li>
+</ul>
+</li>
+<li><strong>挑战和限制</strong>：
+<ul>
+<li>管理和调整不同级联的参数可能比较复杂。</li>
+<li>需要精心设计级联的过渡区域，以避免可见的阴影变化。</li>
+</ul>
+</li>
+</ol>
+<h3 id="几何阴影映射gsmtodo"><a class="markdownIt-Anchor" href="#几何阴影映射gsmtodo"></a> 几何阴影映射（GSM）（TODO）</h3>
+<p>几何阴影映射（Geometric Shadow Mapping，简称GSM）是一种用于渲染阴影的高级技术，它通过考虑场景中的几何信息来改进阴影的质量。GSM 的主要思想是在阴影映射过程中动态调整阴影贴图的分辨率，以便更有效地利用阴影贴图的分辨率，从而在不同区域提供不同级别的阴影细节。</p>
+<p><strong>GSM 的主要特点和工作原理</strong>：</p>
+<ol>
+<li><strong>动态适应分辨率</strong>：
+<ul>
+<li>GSM 会根据场景中的几何细节来动态调整阴影贴图的分辨率。在几何复杂或重要的区域（例如，与光源近距离的物体）使用更高的分辨率，而在细节较少或较远的区域使用较低的分辨率。</li>
+</ul>
+</li>
+<li><strong>几何分析</strong>：
+<ul>
+<li>GSM 通常需要对场景进行一定程度的分析，以确定哪些区域需要更高的阴影分辨率。这可能涉及场景的预处理或实时分析。</li>
+</ul>
+</li>
+<li><strong>提高性能和质量</strong>：
+<ul>
+<li>GSM 的目标是在保持阴影质量的同时提高渲染性能。通过智能分配资源，它可以减少在不太重要的区域浪费的阴影贴图分辨率。</li>
+</ul>
+</li>
+<li><strong>实现复杂性</strong>：
+<ul>
+<li>GSM 的实现通常比传统阴影映射更复杂，因为它涉及到场景分析和阴影贴图分辨率的动态调整。</li>
+</ul>
+</li>
+<li><strong>应用场景</strong>：
+<ul>
+<li>GSM 适用于需要在不同区域精细控制阴影质量的场景，特别是在资源有限但对阴影质量有较高要求的情况下。</li>
+</ul>
+</li>
+</ol>
+<p>GSM 通过结合场景的几何信息和智能的资源分配，提供了一种有效的方法来优化阴影渲染的性能和质量。然而，它的实现可能需要更多的预处理和计算资源，尤其是在实时图形应用中。因此，GSM 的使用需要根据具体的应用场景和性能需求来权衡。</p>
+<p><strong>实际应用案例分析</strong></p>
+<ul>
+<li>游戏开发中的阴影映射</li>
+<li>电影和视觉效果中的应用</li>
+<li>实时渲染和离线渲染的区别</li>
+</ul>
+<p><strong>未来趋势和研究方向</strong></p>
+<ul>
+<li>阴影技术的新进展</li>
+<li>实时光线追踪和阴影映射的结合</li>
+</ul>
+<p><strong>结论</strong></p>
+<ul>
+<li>阴影映射技术的重要性</li>
+<li>综合讨论阴影映射的优势和局限性</li>
+</ul>
+<h3 id="参考网站"><a class="markdownIt-Anchor" href="#参考网站"></a> 参考网站</h3>
+<p><a target="_blank" rel="noopener" href="https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mapping/">https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-16-shadow-mapping/</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/KillerAery/p/15201310.html">https://www.cnblogs.com/KillerAery/p/15201310.html</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/49090321%EF%BC%88%E7%8E%8B%E5%8D%81%E4%B8%80%EF%BC%89">https://www.zhihu.com/question/49090321（王十一）</a></p>
+<p><a target="_blank" rel="noopener" href="https://learnopengl-cn.github.io/05%20Advanced%20Lighting/03%20Shadows/01%20Shadow%20Mapping/">https://learnopengl-cn.github.io/05 Advanced Lighting/03 Shadows/01 Shadow Mapping/</a></p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Shadow_mapping">https://en.wikipedia.org/wiki/Shadow_mapping</a></p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>LearnOpenGL16-ShadownMapping</p><p><a href="http://example.com/2024/01/03/2024-01-03-LearnOpenGL16-ShadownMapping/">http://example.com/2024/01/03/2024-01-03-LearnOpenGL16-ShadownMapping/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>作者</h6><p>码媛飞飞</p></div></div><div class="level-item is-narrow"><div><h6>发布于</h6><p>2024-01-03</p></div></div><div class="level-item is-narrow"><div><h6>更新于</h6><p>2024-01-14</p></div></div><div class="level-item is-narrow"><div><h6>许可协议</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/openGL/">openGL</a></div><!--!--></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2024/01/03/2024-01-03-SpaceTransformation/"><span class="level-item">SpaceTransformation</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><!--!--></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1 is-sticky"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar.png" alt="码媛飞飞"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">码媛飞飞</p><p class="is-size-6 is-block">游戏前端开发</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>China,GuangZhou</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">文章</p><a href="/archives"><p class="title">39</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">分类</p><a href="/categories"><p class="title">6</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">标签</p><a href="/tags"><p class="title">6</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/luomuxie" target="_blank" rel="noopener">关注我</a></div><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/luomuxie"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Facebook" href="https://facebook.com"><i class="fab fa-facebook"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Twitter" href="https://twitter.com"><i class="fab fa-twitter"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Dribbble" href="https://dribbble.com"><i class="fab fa-dribbble"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">目录</h3><ul class="menu-list"><li><a class="level is-mobile" href="#引言"><span class="level-left"><span class="level-item">1</span><span class="level-item"> 引言</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#阴影的重要性"><span class="level-left"><span class="level-item">1.1</span><span class="level-item"> 阴影的重要性</span></span></a></li><li><a class="level is-mobile" href="#shadow-mapping-的基本概念"><span class="level-left"><span class="level-item">1.2</span><span class="level-item"> shadow mapping 的基本概念</span></span></a></li></ul></li><li><a class="level is-mobile" href="#基本原理"><span class="level-left"><span class="level-item">2</span><span class="level-item"> 基本原理</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#光源视角-light-space"><span class="level-left"><span class="level-item">2.1</span><span class="level-item"> 光源视角 (Light Space )</span></span></a></li><li><a class="level is-mobile" href="#深度图-depth-map"><span class="level-left"><span class="level-item">2.2</span><span class="level-item"> 深度图 (Depth Map)</span></span></a></li><li><a class="level is-mobile" href="#如何从光源视角渲染深度图"><span class="level-left"><span class="level-item">2.3</span><span class="level-item"> 如何从光源视角渲染深度图</span></span></a></li></ul></li><li><a class="level is-mobile" href="#第4步使用深度图进行阴影判断"><span class="level-left"><span class="level-item">3</span><span class="level-item"> 第4步：使用深度图进行阴影判断</span></span></a></li><li><a class="level is-mobile" href="#阴影映射的挑战"><span class="level-left"><span class="level-item">4</span><span class="level-item"> 阴影映射的挑战</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#深度冲突shadow-acne"><span class="level-left"><span class="level-item">4.1</span><span class="level-item"> 深度冲突（Shadow Acne）</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#阴影偏移shadow-bias"><span class="level-left"><span class="level-item">4.1.1</span><span class="level-item"> 阴影偏移（shadow bias）</span></span></a></li><li><a class="level is-mobile" href="#延伸一下dot"><span class="level-left"><span class="level-item">4.1.2</span><span class="level-item"> 延伸一下dot：</span></span></a></li><li><a class="level is-mobile" href="#添加分辨率增多采样"><span class="level-left"><span class="level-item">4.1.3</span><span class="level-item"> 添加分辨率增多采样</span></span></a></li></ul></li><li><a class="level is-mobile" href="#悬浮阴影peter-panning"><span class="level-left"><span class="level-item">4.2</span><span class="level-item"> 悬浮阴影（Peter Panning）</span></span></a></li></ul></li><li><a class="level is-mobile" href="#百分比较近过滤pcf"><span class="level-left"><span class="level-item">5</span><span class="level-item"> 百分比较近过滤（PCF）</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#基础pcf"><span class="level-left"><span class="level-item">5.1</span><span class="level-item"> 基础PCF：</span></span></a></li><li><a class="level is-mobile" href="#uniformdisksample-pcf"><span class="level-left"><span class="level-item">5.2</span><span class="level-item"> uniformDiskSample PCF</span></span></a></li><li><a class="level is-mobile" href="#poisson-disk-pcf"><span class="level-left"><span class="level-item">5.3</span><span class="level-item"> poisson disk PCF</span></span></a></li></ul></li><li><a class="level is-mobile" href="#方差阴影映射vsmtodo"><span class="level-left"><span class="level-item">6</span><span class="level-item"> 方差阴影映射（VSM）（TODO）</span></span></a></li><li><a class="level is-mobile" href="#级联阴影映射csmtodo"><span class="level-left"><span class="level-item">7</span><span class="level-item"> 级联阴影映射（CSM）(TODO)</span></span></a></li><li><a class="level is-mobile" href="#几何阴影映射gsmtodo"><span class="level-left"><span class="level-item">8</span><span class="level-item"> 几何阴影映射（GSM）（TODO）</span></span></a></li><li><a class="level is-mobile" href="#参考网站"><span class="level-left"><span class="level-item">9</span><span class="level-item"> 参考网站</span></span></a></li></ul></div></div><style>#toc .menu-list > li > a.is-active + .menu-list { display: block; }#toc .menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">分类</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/OpenGL/"><span class="level-start"><span class="level-item">OpenGL</span></span><span class="level-end"><span class="level-item tag">21</span></span></a></li><li><a class="level is-mobile" href="/categories/match/"><span class="level-start"><span class="level-item">match</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/categories/shader/"><span class="level-start"><span class="level-item">shader</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/categories/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/"><span class="level-start"><span class="level-item">书籍阅读</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile" href="/categories/%E7%94%9F%E6%B4%BB%E5%BE%AE%E5%85%89/"><span class="level-start"><span class="level-item">生活微光</span></span><span class="level-end"><span class="level-item tag">5</span></span></a></li><li><a class="level is-mobile" href="/categories/%E8%8B%B1%E6%96%87/"><span class="level-start"><span class="level-item">英文</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">标签</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/English/"><span class="tag">English</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/match/"><span class="tag">match</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/openGL/"><span class="tag">openGL</span><span class="tag">20</span></a></div><div class="control"><a class="tags has-addons" href="/tags/shader/"><span class="tag">shader</span><span class="tag">3</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E4%B9%A6%E7%B1%8D%E9%98%85%E8%AF%BB/"><span class="tag">书籍阅读</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/%E7%94%9F%E6%B4%BB%E5%BE%AE%E5%85%89/"><span class="tag">生活微光</span><span class="tag">5</span></a></div></div></div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">follow.it</h3><form action="" method="post" target="_blank"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="订阅"></div></div></form></div></div></div></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Hexo" height="28"></a><p class="is-size-7"><span>&copy; 2024 码媛飞飞</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p><p class="is-size-7">© 2019</p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("zh-cn");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="回到顶端" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "此网站使用Cookie来改善您的体验。",
+          dismiss: "知道了！",
+          allow: "允许使用Cookie",
+          deny: "拒绝",
+          link: "了解更多",
+          policy: "Cookie政策",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mhchem.min.js" defer></script><script>window.addEventListener("load", function() {
+            document.querySelectorAll('[role="article"] > .content').forEach(function(element) {
+                renderMathInElement(element);
+            });
+        });</script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><script src="/js/custom.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="想要查找什么..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/content.json"}, {"hint":"想要查找什么...","untitled":"(无标题)","posts":"文章","pages":"页面","categories":"分类","tags":"标签"});
+        });</script></body></html>
